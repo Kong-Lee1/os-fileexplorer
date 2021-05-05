@@ -3,6 +3,10 @@ CXXFLAGS= -std=c++11
 
 INCLUDE= -I/usr/include/SDL2 -I./include
 LIB= -lSDL2
+LIB= -lSDL2_image
+LIB= -lSDL2_ttf
+LIB= -lSDL2_render
+LIB= -lSDL2_mouse
 
 SRCDIR= src
 OBJDIR= obj

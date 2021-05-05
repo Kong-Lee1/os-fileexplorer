@@ -1,0 +1,6 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/rwhite/Documents/Assignments/CISC-310-assignment5/os-fileexplorer'
+ 
+g++ -std=c++11 -o bin/fileexplorer obj/main.o -lSDL2_mouse
+make: Leaving directory '/home/rwhite/Documents/Assignments/CISC-310-assignment5/os-fileexplorer'
+ 
