@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed May  5 17:20:41 2021
+# Make data base, printed on Thu May  6 22:26:45 2021
 
 # Variables
 
@@ -30,6 +30,7 @@ XDG_SESSION_TYPE = x11
 VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
+ 
 # environment
 IM_CONFIG_PHASE = 1
 # automatic
@@ -49,7 +50,7 @@ SNAP_DATA = /var/snap/code/63
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:34347
+JOURNAL_STREAM = 8:35870
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -74,13 +75,13 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 VSCODE_VERBOSE_LOGGING = true
 # environment
 _ = /snap/code/63/usr/share/code/code
-# makefile (from 'Makefile', line 15)
+# makefile (from 'Makefile', line 11)
 OBJS = $(addprefix $(OBJDIR)/, main.o)
 # environment
-MANAGERPID = 1353
+MANAGERPID = 1337
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
-# makefile (from 'Makefile', line 19)
+# makefile (from 'Makefile', line 15)
 mkdirs := 
 # environment
 VSCODE_CWD = /home/rwhite
@@ -93,7 +94,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/1627,unix/CISC310-VM:/tmp/.ICE-unix/1627
+SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/1610,unix/CISC310-VM:/tmp/.ICE-unix/1610
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -104,7 +105,6 @@ SNAP = /snap/code/63
 SNAP_VERSION = cfa2e218
 # environment
 XDG_MENU_PREFIX = gnome-
- 
 # environment
 VSCODE_LOG_STACK = false
 # environment
@@ -112,11 +112,11 @@ DISABLE_WAYLAND = 1
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=92383a30-d053-4740-80d4-1d5f5437deb0&iid=92383a30-d053-4740-80d4-1d5f5437deb0&sid=92383a30-d053-4740-80d4-1d5f5437deb0","uploadToServer":true}
 # environment
-INVOCATION_ID = 2414085d5a854a8084143a305c30a3df
+INVOCATION_ID = b9237fc6e4084bbea171a959370fe045
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/63/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
-# makefile (from 'Makefile', line 9)
-LIB = -lSDL2_mouse
+# makefile (from 'Makefile', line 5)
+LIB = -lSDL2 -lSDL2_image -lSDL2_ttf
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -126,12 +126,12 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 4528
+GIO_LAUNCHED_DESKTOP_FILE_PID = 5932
 # automatic
 %F = $(notdir $%)
 # environment
 DISPLAY = :0
-# makefile (from 'Makefile', line 11)
+# makefile (from 'Makefile', line 7)
 SRCDIR = src
 # environment
 VSCODE_PIPE_LOGGING = true
@@ -142,7 +142,7 @@ PWD = /home/rwhite/Documents/Assignments/CISC-310-assignment5/os-fileexplorer
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1564
+SSH_AGENT_PID = 1550
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -164,6 +164,8 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 # environment
 SNAP_CONTEXT = tXArPpEvPLoR7I85JgsQM-u0apXhkFc8nvF7EzlN1fz_PWuDNTX_
 # environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
 SNAP_USER_COMMON = /home/rwhite/snap/code/common
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
@@ -179,20 +181,21 @@ SNAP_REAL_HOME = /home/rwhite
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
+ 
 # environment
 QT_IM_MODULE = ibus
 # environment
 SNAP_USER_DATA = /home/rwhite/snap/code/63
 # environment
 SHLVL = 0
-# makefile (from 'Makefile', line 13)
+# makefile (from 'Makefile', line 9)
 BINDIR = bin
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-35b4e06d-5f2a-4577-bee3-082a4ba5e584.sock
-# makefile (from 'Makefile', line 16)
-EXEC = $(addprefix $(BINDIR)/, fileexplorer)
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-fee2cf47-0c55-4037-9ed9-72b29f7d4514.sock
+# makefile (from 'Makefile', line 12)
+EXEC = $(addprefix $(BINDIR)/, sdlexample)
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -208,7 +211,6 @@ XDG_CURRENT_DESKTOP = Unity
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
- 
 MAKE_COMMAND := make
 # environment
 VSCODE_NODE_CACHED_DATA_DIR = /home/rwhite/.config/Code/CachedData/cfa2e218100323074ac1948c885448fdf4de2a7f
@@ -235,11 +237,8 @@ GDK_BACKEND = x11
 # automatic
 +F = $(notdir $+)
 # environment
-NO_AT_BRIDGE = 1
-# environment
 QT_ACCESSIBILITY = 1
 # 'override' directive
- 
 .SHELLSTATUS := 0
 # default
 MAKEFILES := 
@@ -249,14 +248,14 @@ SNAP_COOKIE = tXArPpEvPLoR7I85JgsQM-u0apXhkFc8nvF7EzlN1fz_PWuDNTX_
 <F = $(notdir $<)
 # environment
 ELECTRON_RUN_AS_NODE = 1
-# makefile (from 'Makefile', line 12)
+# makefile (from 'Makefile', line 8)
 OBJDIR = obj
 # makefile (from 'Makefile', line 1)
 CXX = g++
 # environment
 SNAP_NAME = code
 # environment
-ELECTRON_NO_ATTACH_CONSOLE = 1
+LC_ALL = C
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # automatic
@@ -276,11 +275,11 @@ GJS_DEBUG_OUTPUT = stderr
 # default
 .RECIPEPREFIX := 
 # environment
-LANG = en_US.UTF-8
+LANG = C
 # environment
-VSCODE_PID = 2899
+VSCODE_PID = 5976
 # variable set hash-table stats:
-# Load=133/1024=13%, Rehash=0, Collisions=26/181=14%
+# Load=133/1024=13%, Rehash=0, Collisions=28/171=16%
 
 # Pattern-specific Variable Values
 
@@ -288,80 +287,44 @@ VSCODE_PID = 2899
 
 # Directories
 
-# . (device 2053, inode 2371130): 11 files, no impossibilities.
-# src (device 2053, inode 2381200): 2 files, no impossibilities so far.
+# . (device 2053, inode 2361387): 11 files, no impossibilities.
+# src (device 2053, inode 2385682): 2 files, no impossibilities so far.
 
- 
 # 13 files, no impossibilities in 2 directories.
 
 # Implicit Rules
 
 obj/%.o: src/%.cpp
-#  recipe to execute (from 'Makefile', line 29):
+#  recipe to execute (from 'Makefile', line 25):
 	$(CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
 
 # 1 implicit rules, 0 (0.0%) terminal.
 
 # Files
 
-all: bin/fileexplorer
+all: bin/sdlexample
+ 
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+#  Successfully updated.
 
 obj/main.o: src/main.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'main'
-#  Last modified 2021-05-05 17:14:25.448764352
+#  Last modified 2021-05-06 22:26:23.004302947
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 29):
+#  recipe to execute (from 'Makefile', line 25):
 	$(CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
-
-# Not a target:
-.SUFFIXES:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
- 
-#  Last modified 2021-05-05 17:19:27.386636157
+#  Last modified 2021-05-06 22:26:10.931895046
 #  File has been updated.
 #  Successfully updated.
-
-bin/fileexplorer: obj/main.o
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: ''
-#  File does not exist.
-#  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := bin/fileexplorer
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := obj/main.o
-# automatic
-# | := 
-# automatic
-# < := obj/main.o
-# automatic
-# ^ := obj/main.o
-# automatic
-# ? := obj/main.o
-# variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/16=6%
-#  recipe to execute (from 'Makefile', line 26):
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIB)
 
 # Not a target:
 .DEFAULT:
@@ -369,35 +332,43 @@ bin/fileexplorer: obj/main.o
 #  Modification time never checked.
 #  File has not been updated.
 
+bin/sdlexample: obj/main.o
+#  Implicit rule search has not been done.
+#  Last modified 2021-05-06 22:26:23.188309045
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 22):
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIB)
+
 clean:
+ 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 34):
+#  recipe to execute (from 'Makefile', line 30):
 	rm -f $(OBJS) $(EXEC)
 
 # Not a target:
 src/main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-05-05 17:14:19.615906702
+#  Last modified 2021-05-06 22:25:51.347201993
 #  File has been updated.
 #  Successfully updated.
 
 # files hash-table stats:
-# Load=8/1024=1%, Rehash=0, Collisions=0/26=0%
+# Load=8/1024=1%, Rehash=0, Collisions=0/25=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 24 / storage = 197 B / avg = 8 B
-# current buf: size = 8162 B / used = 197 B / count = 24 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 24 / storage = 195 B / avg = 8 B
+# current buf: size = 8162 B / used = 195 B / count = 24 / avg = 8 B
 
-# strcache performance: lookups = 37 / hit rate = 35%
+# strcache performance: lookups = 36 / hit rate = 33%
 # hash-table stats:
-# Load=24/8192=0%, Rehash=0, Collisions=1/37=3%
-# Finished Make data base on Wed May  5 17:20:41 2021
- 
+# Load=24/8192=0%, Rehash=0, Collisions=1/36=3%
+# Finished Make data base on Thu May  6 22:26:45 2021
 
  

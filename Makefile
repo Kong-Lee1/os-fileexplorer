@@ -2,18 +2,14 @@ CXX= g++
 CXXFLAGS= -std=c++11
 
 INCLUDE= -I/usr/include/SDL2 -I./include
-LIB= -lSDL2
-LIB= -lSDL2_image
-LIB= -lSDL2_ttf
-LIB= -lSDL2_render
-LIB= -lSDL2_mouse
+LIB= -lSDL2 -lSDL2_image -lSDL2_ttf
 
 SRCDIR= src
 OBJDIR= obj
 BINDIR= bin
 
 OBJS= $(addprefix $(OBJDIR)/, main.o)
-EXEC= $(addprefix $(BINDIR)/, fileexplorer)
+EXEC= $(addprefix $(BINDIR)/, sdlexample)
 
 # CREATE DIRECTORIES (IF DON'T ALREADY EXIST)
 mkdirs:= $(shell mkdir -p $(OBJDIR) $(BINDIR))
@@ -32,4 +28,3 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 # REMOVE OLD FILES
 clean:
 	rm -f $(OBJS) $(EXEC)
-
