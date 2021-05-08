@@ -1,6 +1,6 @@
-make --dry-run --keep-going --print-directory
+make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/home/rwhite/Documents/Assignments/CISC-310-assignment5/os-fileexplorer'
- 
-make: Nothing to be done for 'all'.
+g++ -std=c++11 -c -o obj/main.o src/main.cpp -I/usr/include/SDL2 -I./include
+g++ -std=c++11 -o bin/sdlexample obj/main.o -lSDL2 -lSDL2_image -lSDL2_ttf
 make: Leaving directory '/home/rwhite/Documents/Assignments/CISC-310-assignment5/os-fileexplorer'
  

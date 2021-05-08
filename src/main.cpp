@@ -10,6 +10,8 @@ typedef struct AppData {
     TTF_Font *font;
     SDL_Texture *penguin;
     SDL_Texture *phrase;
+    SDL_Texture *new_phrase;
+    SDL_Rect new_phrase_rect;
     SDL_Rect penguin_rect;
     SDL_Rect phrase_rect;
     bool penguin_selected;
@@ -47,6 +49,7 @@ int main(int argc, char **argv)
         SDL_WaitEvent(&event);
         switch (event.type)
         {
+            /*
             case SDL_MOUSEMOTION:
                 if (data.penguin_selected)
                 {
@@ -59,17 +62,22 @@ int main(int argc, char **argv)
                     data.phrase_rect.y = event.motion.y - data.offset.y;
                 }
                 break;
+            */
             case SDL_MOUSEBUTTONDOWN:
+                //if the directory name is clicked
                 if (event.button.button == SDL_BUTTON_LEFT &&
                     event.button.x >= data.phrase_rect.x &&
                     event.button.x <= data.phrase_rect.x + data.phrase_rect.w &&
                     event.button.y >= data.phrase_rect.y &&
                     event.button.y <= data.phrase_rect.y + data.phrase_rect.h)
                 {
+                    //expand directory
                     data.phrase_selected = true;
-                    data.offset.x = event.button.x - data.phrase_rect.x;
-                    data.offset.y = event.button.y - data.phrase_rect.y;
+                    data.new_phrase_rect.x = data.phrase_rect.x + 20;
+                    data.new_phrase_rect.y = data.phrase_rect.y + 30;
+
                 }
+                //if the icon is clicked
                 else if (event.button.button == SDL_BUTTON_LEFT &&
                     event.button.x >= data.penguin_rect.x &&
                     event.button.x <= data.penguin_rect.x + data.penguin_rect.w &&
@@ -104,8 +112,8 @@ int main(int argc, char **argv)
  
 void initialize(SDL_Renderer *renderer, AppData *data_ptr)
 {
-    data_ptr->font = TTF_OpenFont("resrc/OpenSans-Regular.ttf", 24);
- 
+    data_ptr->font = TTF_OpenFont("resrc/OpenSans-Regular.ttf", 16);
+    /*
     SDL_Surface *img_surf = IMG_Load("resrc/images/linux-penguin.png");
     data_ptr->penguin = SDL_CreateTextureFromSurface(renderer, img_surf);
     SDL_FreeSurface(img_surf);
@@ -114,14 +122,18 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr)
     data_ptr->penguin_rect.w = 165;
     data_ptr->penguin_rect.h = 200;
     data_ptr->penguin_selected = false;
- 
+    */
     SDL_Color color = { 0, 0, 0 };
-    SDL_Surface *phrase_surf = TTF_RenderText_Solid(data_ptr->font, "Hello World!", color);
+    SDL_Surface *phrase_surf = TTF_RenderText_Solid(data_ptr->font, "Name                |Size     |Type      |User     |Permissions", color);
+    SDL_Surface *new_phrase_surf = TTF_RenderText_Solid(data_ptr->font, "DIRECTORY", color);
     data_ptr->phrase = SDL_CreateTextureFromSurface(renderer, phrase_surf);
+    data_ptr->new_phrase = SDL_CreateTextureFromSurface(renderer, new_phrase_surf);
     SDL_FreeSurface(phrase_surf);
+    SDL_FreeSurface(new_phrase_surf);
     data_ptr->phrase_rect.x = 10;
-    data_ptr->phrase_rect.y = 500;
+    data_ptr->phrase_rect.y = 10;
     SDL_QueryTexture(data_ptr->phrase, NULL, NULL, &(data_ptr->phrase_rect.w), &(data_ptr->phrase_rect.h));
+    SDL_QueryTexture(data_ptr->new_phrase, NULL, NULL, &(data_ptr->new_phrase_rect.w), &(data_ptr->new_phrase_rect.h));
     data_ptr->phrase_selected = false;
 }
  
@@ -132,8 +144,10 @@ void render(SDL_Renderer *renderer, AppData *data_ptr)
     SDL_RenderClear(renderer);
      
     // TODO: draw!
-    SDL_RenderCopy(renderer, data_ptr->penguin, NULL, &(data_ptr->penguin_rect));
- 
+    //SDL_RenderCopy(renderer, data_ptr->penguin, NULL, &(data_ptr->penguin_rect));
+    if(data_ptr->phrase_selected){
+        SDL_RenderCopy(renderer, data_ptr->new_phrase, NULL, &(data_ptr->new_phrase_rect));
+    }
     SDL_RenderCopy(renderer, data_ptr->phrase, NULL, &(data_ptr->phrase_rect));
  
     // show rendered frame
@@ -142,7 +156,7 @@ void render(SDL_Renderer *renderer, AppData *data_ptr)
  
 void quit(AppData *data_ptr)
 {
-    SDL_DestroyTexture(data_ptr->penguin);
+    //SDL_DestroyTexture(data_ptr->penguin);
     SDL_DestroyTexture(data_ptr->phrase);
     TTF_CloseFont(data_ptr->font);
 }

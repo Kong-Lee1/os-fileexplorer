@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu May  6 22:26:45 2021
+# Make data base, printed on Fri May  7 21:24:16 2021
 
 # Variables
 
@@ -30,7 +30,6 @@ XDG_SESSION_TYPE = x11
 VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
- 
 # environment
 IM_CONFIG_PHASE = 1
 # automatic
@@ -181,7 +180,6 @@ SNAP_REAL_HOME = /home/rwhite
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
- 
 # environment
 QT_IM_MODULE = ibus
 # environment
@@ -193,7 +191,7 @@ BINDIR = bin
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-fee2cf47-0c55-4037-9ed9-72b29f7d4514.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-4d3dba24-84fb-4b6a-9c5e-5850c4a0dafe.sock
 # makefile (from 'Makefile', line 12)
 EXEC = $(addprefix $(BINDIR)/, sdlexample)
 # default
@@ -280,6 +278,7 @@ LANG = C
 VSCODE_PID = 5976
 # variable set hash-table stats:
 # Load=133/1024=13%, Rehash=0, Collisions=28/171=16%
+ 
 
 # Pattern-specific Variable Values
 
@@ -303,7 +302,6 @@ obj/%.o: src/%.cpp
 # Files
 
 all: bin/sdlexample
- 
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
@@ -341,7 +339,6 @@ bin/sdlexample: obj/main.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIB)
 
 clean:
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -369,6 +366,6 @@ src/main.cpp:
 # strcache performance: lookups = 36 / hit rate = 33%
 # hash-table stats:
 # Load=24/8192=0%, Rehash=0, Collisions=1/36=3%
-# Finished Make data base on Thu May  6 22:26:45 2021
+# Finished Make data base on Fri May  7 21:24:16 2021
 
  
