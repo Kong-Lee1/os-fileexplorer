@@ -4,6 +4,7 @@
 #include <SDL_ttf.h>
 #include <dirent.h>
 #include <filesystem>
+#include <unistd.h>
 
 #include <vector>
 
@@ -20,15 +21,16 @@
  
 typedef struct AppData {
     TTF_Font *font;
-    SDL_Texture *penguin;
-    SDL_Texture *phrase;
-    SDL_Texture *new_phrase;
-    SDL_Rect new_phrase_rect;
-    SDL_Rect penguin_rect;
-    SDL_Rect phrase_rect;
-    bool penguin_selected;
-    bool phrase_selected;
+    SDL_Texture *icon;
+    SDL_Texture *background;
+    SDL_Texture *directory;
+    SDL_Rect directory_rect;
+    SDL_Rect icon_rect;
+    SDL_Rect background_rect;
+    bool icon_selected;
+    bool directory_selected;
     SDL_Point offset;
+    char *curdir;
 } AppData;
  
 void initialize(SDL_Renderer *renderer, AppData *data_ptr);
@@ -38,7 +40,9 @@ void listDirectory(std::string dirname);
  
 int main(int argc, char **argv)
 {
+    AppData data;
     char *home = getenv("HOME");
+    data.curdir = home;
     //char *path = getenv("LS");
     printf("HOME: %s\n", home);
 
@@ -64,7 +68,6 @@ int main(int argc, char **argv)
     SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, 0, &window, &renderer);
  
     // initialize and perform rendering loop
-    AppData data;
     initialize(renderer, &data);
     render(renderer, &data);
     SDL_Event event;
@@ -91,32 +94,32 @@ int main(int argc, char **argv)
             case SDL_MOUSEBUTTONDOWN:
                 //if the directory name is clicked
                 if (event.button.button == SDL_BUTTON_LEFT &&
-                    event.button.x >= data.phrase_rect.x &&
-                    event.button.x <= data.phrase_rect.x + data.phrase_rect.w &&
-                    event.button.y >= data.phrase_rect.y &&
-                    event.button.y <= data.phrase_rect.y + data.phrase_rect.h)
+                    event.button.x >= data.directory_rect.x &&
+                    event.button.x <= data.directory_rect.x + data.directory_rect.w &&
+                    event.button.y >= data.directory_rect.y &&
+                    event.button.y <= data.directory_rect.y + data.directory_rect.h)
                 {
                     //expand directory
-                    data.phrase_selected = true;
-                    data.new_phrase_rect.x = data.phrase_rect.x + 20;
-                    data.new_phrase_rect.y = data.phrase_rect.y + 30;
-
+                    data.directory_selected = true;
+                    data.directory_rect.x = data.directory_rect.x + 20;
+                    data.directory_rect.y = data.directory_rect.y + 30;
+                    //data.curdir = chdir(".");
                 }
                 //if the icon is clicked
                 else if (event.button.button == SDL_BUTTON_LEFT &&
-                    event.button.x >= data.penguin_rect.x &&
-                    event.button.x <= data.penguin_rect.x + data.penguin_rect.w &&
-                    event.button.y >= data.penguin_rect.y &&
-                    event.button.y <= data.penguin_rect.y + data.penguin_rect.h)
+                    event.button.x >= data.icon_rect.x &&
+                    event.button.x <= data.icon_rect.x + data.icon_rect.w &&
+                    event.button.y >= data.icon_rect.y &&
+                    event.button.y <= data.icon_rect.y + data.icon_rect.h)
                 {
-                    data.penguin_selected = true;
-                    data.offset.x = event.button.x - data.penguin_rect.x;
-                    data.offset.y = event.button.y - data.penguin_rect.y;
+                    data.icon_selected = true;
+                    data.offset.x = event.button.x - data.icon_rect.x;
+                    data.offset.y = event.button.y - data.icon_rect.y;
                 }
                 break;
             case SDL_MOUSEBUTTONUP:
-                data.phrase_selected = false;
-                data.penguin_selected = false;
+                data.directory_selected = false;
+                data.icon_selected = false;
                 break;
         }
  
@@ -149,17 +152,19 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr)
     data_ptr->penguin_selected = false;
     */
     SDL_Color color = { 0, 0, 0 };
-    SDL_Surface *phrase_surf = TTF_RenderText_Solid(data_ptr->font, "Name                |Size     |Type      |User     |Permissions", color);
-    SDL_Surface *new_phrase_surf = TTF_RenderText_Solid(data_ptr->font, "DIRECTORY", color);
-    data_ptr->phrase = SDL_CreateTextureFromSurface(renderer, phrase_surf);
-    data_ptr->new_phrase = SDL_CreateTextureFromSurface(renderer, new_phrase_surf);
-    SDL_FreeSurface(phrase_surf);
-    SDL_FreeSurface(new_phrase_surf);
-    data_ptr->phrase_rect.x = 10;
-    data_ptr->phrase_rect.y = 10;
-    SDL_QueryTexture(data_ptr->phrase, NULL, NULL, &(data_ptr->phrase_rect.w), &(data_ptr->phrase_rect.h));
-    SDL_QueryTexture(data_ptr->new_phrase, NULL, NULL, &(data_ptr->new_phrase_rect.w), &(data_ptr->new_phrase_rect.h));
-    data_ptr->phrase_selected = false;
+    SDL_Surface *background_surf = TTF_RenderText_Solid(data_ptr->font, "Name                |Size     |Type      |User     |Permissions", color);
+    SDL_Surface *directory_surf = TTF_RenderText_Solid(data_ptr->font, data_ptr->curdir, color);
+    data_ptr->background = SDL_CreateTextureFromSurface(renderer, background_surf);
+    data_ptr->directory = SDL_CreateTextureFromSurface(renderer, directory_surf);
+    SDL_FreeSurface(background_surf);
+    SDL_FreeSurface(directory_surf);
+    data_ptr->background_rect.x = 10;
+    data_ptr->background_rect.y = 10;
+    data_ptr->directory_rect.x = 10;
+    data_ptr->directory_rect.y = 40;
+    SDL_QueryTexture(data_ptr->background, NULL, NULL, &(data_ptr->background_rect.w), &(data_ptr->background_rect.h));
+    SDL_QueryTexture(data_ptr->directory, NULL, NULL, &(data_ptr->directory_rect.w), &(data_ptr->directory_rect.h));
+    //data_ptr->directory_selected = false;
 }
  
 void render(SDL_Renderer *renderer, AppData *data_ptr)
@@ -170,10 +175,11 @@ void render(SDL_Renderer *renderer, AppData *data_ptr)
      
     // TODO: draw!
     //SDL_RenderCopy(renderer, data_ptr->penguin, NULL, &(data_ptr->penguin_rect));
-    if(data_ptr->phrase_selected){
-        SDL_RenderCopy(renderer, data_ptr->new_phrase, NULL, &(data_ptr->new_phrase_rect));
+    if(data_ptr->directory_selected){
+        SDL_RenderCopy(renderer, data_ptr->directory, NULL, &(data_ptr->directory_rect));
     }
-    SDL_RenderCopy(renderer, data_ptr->phrase, NULL, &(data_ptr->phrase_rect));
+    SDL_RenderCopy(renderer, data_ptr->directory, NULL, &(data_ptr->directory_rect));
+    SDL_RenderCopy(renderer, data_ptr->background, NULL, &(data_ptr->background_rect));
  
     // show rendered frame
     SDL_RenderPresent(renderer);
@@ -181,8 +187,8 @@ void render(SDL_Renderer *renderer, AppData *data_ptr)
  
 void quit(AppData *data_ptr)
 {
-    //SDL_DestroyTexture(data_ptr->penguin);
-    SDL_DestroyTexture(data_ptr->phrase);
+    SDL_DestroyTexture(data_ptr->icon);
+    SDL_DestroyTexture(data_ptr->background);
     TTF_CloseFont(data_ptr->font);
 }
 
