@@ -2,6 +2,18 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <dirent.h>
+#include <filesystem>
+
+#include <vector>
+
+#include <sys/stat.h>
+#include <algorithm>
+#include <string.h>
+#include <string>
+
+//using namespace std;
+//namespace fs = std::experimental::filesystem;
  
 #define WIDTH 800
 #define HEIGHT 600
@@ -22,11 +34,24 @@ typedef struct AppData {
 void initialize(SDL_Renderer *renderer, AppData *data_ptr);
 void render(SDL_Renderer *renderer, AppData *data_ptr);
 void quit(AppData *data_ptr);
+void listDirectory(std::string dirname);
  
 int main(int argc, char **argv)
 {
     char *home = getenv("HOME");
+    //char *path = getenv("LS");
     printf("HOME: %s\n", home);
+
+    std::string homeToString = (std::string)home;
+
+    listDirectory(home);
+
+    //if(path != NULL){
+
+        //printf("The current path is: %s \n", path);
+    //}
+    
+    
  
     // initializing SDL as Video
     SDL_Init(SDL_INIT_VIDEO);
@@ -159,4 +184,49 @@ void quit(AppData *data_ptr)
     //SDL_DestroyTexture(data_ptr->penguin);
     SDL_DestroyTexture(data_ptr->phrase);
     TTF_CloseFont(data_ptr->font);
+}
+
+void listDirectory(std::string dirname)
+{
+    struct stat info;
+    int err = stat(dirname.c_str(), &info);
+    if (err == 0 && S_ISDIR(info.st_mode))
+    {
+        std::vector<std::string> files;
+        DIR* dir = opendir(dirname.c_str());
+        // TODO: modify to be able to print all entries in directory in alphabetical order
+        //       in addition to file name, also print file size (or 'directory' if entry is a folder)
+        //       Example output:
+        //         ls.cpp (693 bytes
+        //         my_file.txt (62 bytes)
+        //         OS Files (directory)
+        struct dirent *entry;
+        struct dirent *holder;
+
+        while ((entry = readdir(dir)) != NULL) {
+
+            //if(strcmp(entry.d_name[]))
+            files.push_back(entry->d_name);
+        }
+        closedir(dir);
+        //std::cout << "files is \n" << files[1];
+    
+        std::sort(files.begin(), files.end());
+        int i;
+        struct stat file_info;
+        //std::cout << "file size is \n" << files.size();
+        for(i =0; i < files.size() - 1; i++ ){
+            //printf("%s testing \n", files[i]);
+            std::cout << "files is \n" << files[i];
+            //names without a period is a folder, so grab theses.
+            //std::cout << "entry is \n" << entry->d_name;
+            //printf("%s\n, (%d bytes)\n", entry->d_name, entry->d_reclen);
+        }
+        //printf("%s, (%d bytes)\n", entry->d_name, entry->d_reclen);
+        
+    }
+    else
+    {
+        fprintf(stderr, "Error: directory '%s' not found\n", dirname.c_str());
+    }
 }
