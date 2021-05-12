@@ -26,27 +26,8 @@ typedef struct AppData {
     SDL_Texture *background;
     SDL_Texture *directory;
 
-    SDL_Texture *desktop;
-    SDL_Texture *documents;
-    SDL_Texture *downloads;
-    SDL_Texture *music;
-    SDL_Texture *pictures;
-    SDL_Texture *public_drive;
-    SDL_Texture *templates;
-    SDL_Texture *videos;
-    SDL_Texture *snap;
-
-    SDL_Rect desktop_rect;
-    SDL_Rect documents_rect;
-    SDL_Rect downloads_rect;
-    SDL_Rect music_rect;
-    SDL_Rect pictures_rect;
-    SDL_Rect public_drive_rect;
-    SDL_Rect templates_rect;
-    SDL_Rect videos_rect;
-    SDL_Rect snap_rect;
-
     std::vector<SDL_Texture*> sdl_permissions;//will need helper function to grab permissions
+    std::vector<SDL_Rect> sdl_directory_rect;
     std::vector<SDL_Texture*> sdl_names;//will need helper function to grab names
     std::vector<SDL_Texture*> sdl_file_size;//will need helper function to grab file_size
     std::vector<SDL_Texture*> sdl_file_type;//will need helper function to grab file_size
@@ -76,10 +57,10 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr);
 void render(SDL_Renderer *renderer, AppData *data_ptr);
 void quit(AppData *data_ptr);
 std::vector<std::string> listDirectory(std::string dirname);
-std::vector<SDL_Texture*> get_permissions(std::string dirname);
-std::vector<SDL_Texture*> get_names(std::string dirname);
-std::vector<SDL_Texture*> get_files_sizes(std::string dirname);
-std::vector<SDL_Texture*> get_file_types(std::string dirname);
+std::vector<std::string> get_permissions(std::vector<SDL_Texture> directory);
+std::vector<std::string> get_names(std::vector<SDL_Texture> directory);
+std::vector<std::string> get_files_sizes(std::vector<SDL_Texture> directory);
+std::vector<std::string> get_file_types(std::vector<SDL_Texture> directory);
 
 char* permissions(char *file);
  
@@ -110,7 +91,7 @@ int main(int argc, char **argv)
 
     //home_folders_and_files = listDirectory(home);
     //desktop_folders_and_files = 
-    listDirectory((std::string)home + "/Desktop");
+    //listDirectory((std::string)home + "/Desktop");
 
     //for(int i = 0; i < desktop_folders_and_files.size(); i++){
 
@@ -172,7 +153,6 @@ int main(int argc, char **argv)
                     event.button.y >= data.directory_rect.y &&
                     event.button.y <= data.directory_rect.y + data.directory_rect.h)
                 {
-                    //expand directory- how can we keep the name of the previous directory while it is opened?
                     //How can we print all of the directories and make each of them their own 'surface' to be clicked on?
                     data.directory_selected = true;
                     //data.directory_rect.x = data.directory_rect.x + 20;
@@ -335,14 +315,23 @@ void render(SDL_Renderer *renderer, AppData *data_ptr)
     SDL_SetRenderDrawColor(renderer, 235, 235, 235, 255);
     SDL_RenderClear(renderer);
      
-    // TODO: draw!
-    //SDL_RenderCopy(renderer, data_ptr->penguin, NULL, &(data_ptr->penguin_rect));
-    //if(data_ptr->directory_selected){
-    //    SDL_RenderCopy(renderer, data_ptr->directory, NULL, &(data_ptr->directory_rect));
-    //}
-    //Should we have a loop that prints each directory, and how would we do that?
-    //SDL_RenderCopy(renderer, data_ptr->directory, NULL, &(data_ptr->directory_rect));
+    std::vector<std::string> directories = listDirectory(data_ptr->curdir);
+    SDL_Color color = { 0, 0, 0 };
     SDL_RenderCopy(renderer, data_ptr->background, NULL, &(data_ptr->background_rect));
+    for(int i = 0; i < directories.size(); i++){
+        SDL_Surface *directory_surf = TTF_RenderText_Solid(data_ptr->font, directories[i].c_str(), color);
+        data_ptr->sdl_names[i] = SDL_CreateTextureFromSurface(renderer, directory_surf);
+        SDL_FreeSurface(directory_surf);
+        if(i == 0){
+            data_ptr->sdl_directory_rect[i].x = 10;
+            data_ptr->sdl_directory_rect[i].y = 40;
+        }else{
+            data_ptr->sdl_directory_rect[i].x = data_ptr->sdl_directory_rect[i-1].x;
+            data_ptr->sdl_directory_rect[i].x = data_ptr->sdl_directory_rect[i-1].y + 40;
+        }
+        SDL_QueryTexture(data_ptr->directory, NULL, NULL, &(data_ptr->sdl_directory_rect[i].w), &(data_ptr->sdl_directory_rect[i].h));
+        SDL_RenderCopy(renderer, data_ptr->sdl_names[i], NULL, &(data_ptr->sdl_directory_rect[i]));
+    }
  
     // show rendered frame
     SDL_RenderPresent(renderer);
@@ -414,7 +403,7 @@ std::vector<std::string> listDirectory(std::string dirname)
 }
 
 //to grab file's permissions
-std::vector<SDL_Texture*> get_permissions(std::string dirname){
+/*std::vector<std::string> get_permissions(std::vector<SDL_Texture> directory){
     
     struct stat info;
     int err = stat(dirname.c_str(), &info);
@@ -480,7 +469,7 @@ std::vector<SDL_Texture*> get_permissions(std::string dirname){
     return files_permissions;
 
 }
-
+*/
 char* permissions(char *file){
     struct stat st;
     char *modeval = (char *)malloc(sizeof(char) * 9 + 1);
@@ -506,11 +495,16 @@ char* permissions(char *file){
 }
 
 //to grab folders/files names
-std::vector<SDL_Texture*> get_names(std::string dirname);
+std::vector<std::string> get_names(std::vector<SDL_Texture> directories);
 
 //to grab file's sizes
-std::vector<SDL_Texture*> get_file_size(std::string dirname);
+std::vector<std::string> get_files_sizes(std::vector<SDL_Texture> directories);
 
 //to grab file's types
-std::vector<SDL_Texture*> get_file_types(std::string dirname);
+std::vector<std::string> get_file_types(std::vector<SDL_Texture> directories);
+
+std::vector<std::string> get_permissions(std::vector<SDL_Texture> directories);
+
+
+
 
