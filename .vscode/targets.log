@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun May  9 21:44:49 2021
+# Make data base, printed on Tue May 11 19:55:57 2021
 
 # Variables
 
@@ -41,15 +41,15 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=ibus
 # makefile
-CURDIR := /home/kongphenglee/Desktop/File Explorer/os-fileexplorer
+CURDIR := /home/kongphenglee/Desktop/File Explorer (1)/os-fileexplorer
 # makefile
 SHELL = /bin/sh
 # environment
-SNAP_DATA = /var/snap/code/63
+SNAP_DATA = /var/snap/code/64
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:35993
+JOURNAL_STREAM = 8:35666
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -73,11 +73,11 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-_ = /snap/code/63/usr/share/code/code
+_ = /snap/code/64/usr/share/code/code
 # makefile (from 'Makefile', line 11)
 OBJS = $(addprefix $(OBJDIR)/, main.o)
 # environment
-MANAGERPID = 1354
+MANAGERPID = 1407
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # makefile (from 'Makefile', line 15)
@@ -85,7 +85,7 @@ mkdirs :=
 # environment
 VSCODE_CWD = /home/kongphenglee
 # environment
-GSETTINGS_SCHEMA_DIR = /snap/code/63/usr/share/glib-2.0/schemas
+GSETTINGS_SCHEMA_DIR = /snap/code/64/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -93,15 +93,15 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/1647,unix/CISC310-VM:/tmp/.ICE-unix/1647
+SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/1707,unix/CISC310-VM:/tmp/.ICE-unix/1707
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/kongphenglee/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
-SNAP = /snap/code/63
+SNAP = /snap/code/64
 # environment
-SNAP_VERSION = cfa2e218
+SNAP_VERSION = e713fe9b
 # environment
 XDG_MENU_PREFIX = gnome-
 # environment
@@ -111,9 +111,9 @@ DISABLE_WAYLAND = 1
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=d8539125-14c8-44f8-84ec-a214e0dab703&iid=d8539125-14c8-44f8-84ec-a214e0dab703&sid=d8539125-14c8-44f8-84ec-a214e0dab703","uploadToServer":true}
 # environment
-INVOCATION_ID = 30f6487981b64337809335ffa79748f5
+INVOCATION_ID = 42d2e067d6dc4812b2ee85646153fc83
 # environment
-GDK_PIXBUF_MODULEDIR = /snap/code/63/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+GDK_PIXBUF_MODULEDIR = /snap/code/64/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # makefile (from 'Makefile', line 5)
 LIB = -lSDL2 -lSDL2_image -lSDL2_ttf
 # default
@@ -125,7 +125,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 2109
+GIO_LAUNCHED_DESKTOP_FILE_PID = 5215
 # automatic
 %F = $(notdir $%)
 # environment
@@ -137,11 +137,11 @@ VSCODE_PIPE_LOGGING = true
 # environment
 SNAP_INSTANCE_KEY = 
 # environment
-PWD = /home/kongphenglee/Desktop/File Explorer/os-fileexplorer
+PWD = /home/kongphenglee/Desktop/File Explorer (1)/os-fileexplorer
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1575
+SSH_AGENT_PID = 1635
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -183,7 +183,7 @@ MAKECMDGOALS := all
 # environment
 QT_IM_MODULE = ibus
 # environment
-SNAP_USER_DATA = /home/kongphenglee/snap/code/63
+SNAP_USER_DATA = /home/kongphenglee/snap/code/64
 # environment
 SHLVL = 0
 # makefile (from 'Makefile', line 9)
@@ -191,7 +191,7 @@ BINDIR = bin
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-47d120c6-976f-4a26-928f-45ee466ca45c.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-5925818c-9a4b-435c-bc17-2d59289a278b.sock
 # makefile (from 'Makefile', line 12)
 EXEC = $(addprefix $(BINDIR)/, sdlexample)
 # default
@@ -199,7 +199,7 @@ MAKE_VERSION := 4.2.1
 # environment
 USER = kongphenglee
 # environment
-SNAP_REVISION = 63
+SNAP_REVISION = 64
 # makefile
 .DEFAULT_GOAL := all
 # makefile (from 'Makefile', line 4)
@@ -211,13 +211,13 @@ XDG_CURRENT_DESKTOP = Unity
 # default
 MAKE_COMMAND := make
 # environment
-VSCODE_NODE_CACHED_DATA_DIR = /home/kongphenglee/.config/Code/CachedData/cfa2e218100323074ac1948c885448fdf4de2a7f
+VSCODE_NODE_CACHED_DATA_DIR = /home/kongphenglee/.config/Code/CachedData/e713fe9b05fc24facbec8f34fb1017133858842b
 # default
 .VARIABLES := 
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-beb86aa1-1.56.0-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-beb86aa1-1.56.1-main.sock
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # makefile
@@ -234,6 +234,8 @@ BREAKPAD_DUMP_LOCATION = /home/kongphenglee/.config/Code/exthost Crash Reports
 GDK_BACKEND = x11
 # automatic
 +F = $(notdir $+)
+# environment
+NO_AT_BRIDGE = 1
 # environment
 QT_ACCESSIBILITY = 1
 # 'override' directive
@@ -275,9 +277,10 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 2451
+VSCODE_PID = 2204
 # variable set hash-table stats:
-# Load=133/1024=13%, Rehash=0, Collisions=29/177=16%
+ 
+# Load=134/1024=13%, Rehash=0, Collisions=29/178=16%
 
 # Pattern-specific Variable Values
 
@@ -285,9 +288,8 @@ VSCODE_PID = 2451
 
 # Directories
 
-# . (device 2053, inode 1186682): 11 files, no impossibilities.
- 
-# src (device 2053, inode 1313446): 2 files, no impossibilities so far.
+# . (device 2053, inode 925231): 11 files, no impossibilities.
+# src (device 2053, inode 1313848): 2 files, no impossibilities so far.
 
 # 13 files, no impossibilities in 2 directories.
 
@@ -313,7 +315,7 @@ all: bin/sdlexample
 obj/main.o: src/main.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'main'
-#  Last modified 2021-05-09 15:01:54.867049901
+#  Last modified 2021-05-11 19:55:44.944585121
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # automatic
@@ -340,7 +342,7 @@ obj/main.o: src/main.cpp
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-05-09 02:44:29.05636096
+#  Last modified 2021-05-11 19:55:44.944585121
 #  File has been updated.
 #  Successfully updated.
 
@@ -352,7 +354,7 @@ Makefile:
 
 bin/sdlexample: obj/main.o
 #  Implicit rule search has not been done.
-#  Last modified 2021-05-09 15:01:55.147052055
+#  Last modified 2021-05-11 19:55:44.944585121
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
@@ -370,7 +372,7 @@ clean:
 # Not a target:
 src/main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-05-09 15:04:51.036197172
+#  Last modified 2021-05-11 19:55:44.948585121
 #  File has been updated.
 #  Successfully updated.
 
@@ -388,6 +390,6 @@ src/main.cpp:
 # strcache performance: lookups = 36 / hit rate = 33%
 # hash-table stats:
 # Load=24/8192=0%, Rehash=0, Collisions=1/36=3%
-# Finished Make data base on Sun May  9 21:44:49 2021
+# Finished Make data base on Tue May 11 19:55:57 2021
 
  
