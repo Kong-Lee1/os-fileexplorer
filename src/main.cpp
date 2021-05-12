@@ -54,7 +54,8 @@ typedef struct AppData {
 } AppData;
  
 void initialize(SDL_Renderer *renderer, AppData *data_ptr);
-void render(SDL_Renderer *renderer, AppData *data_ptr);
+void render(SDL_Renderer *renderer, AppData *data_ptr, std::vector<std::string> directories);
+//void render(SDL_Renderer *renderer, AppData *data_ptr);
 void quit(AppData *data_ptr);
 std::vector<std::string> listDirectory(std::string dirname);
 std::vector<std::string> get_permissions(std::vector<SDL_Texture> directory);
@@ -89,7 +90,8 @@ int main(int argc, char **argv)
 
     //std::string homeToString = (std::string)home;
 
-    //home_folders_and_files = listDirectory(home);
+    listDirectory(home);
+    home_folders_and_files = listDirectory(home);
     //desktop_folders_and_files = 
     //listDirectory((std::string)home + "/Desktop");
 
@@ -120,12 +122,17 @@ int main(int argc, char **argv)
     SDL_Renderer *renderer;
     SDL_Window *window;
     SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, 0, &window, &renderer);
+    std::cout << "here 1" << std::endl;
  
     // initialize and perform rendering loop
     initialize(renderer, &data);
-    render(renderer, &data);
+    std::cout << "here 1^^" << std::endl;
+    //render(renderer, &data);
+    render(renderer, &data, home_folders_and_files);
+    std::cout << "here 1**" << std::endl;
     SDL_Event event;
     SDL_WaitEvent(&event);
+    std::cout << "here 2" << std::endl;
     while (event.type != SDL_QUIT)
     {
         SDL_WaitEvent(&event);
@@ -176,8 +183,10 @@ int main(int argc, char **argv)
                 data.icon_selected = false;
                 break;
         }
- 
-        render(renderer, &data);
+        std::cout << "here 3" << std::endl;
+        //render(renderer, &data);
+        render(renderer, &data, home_folders_and_files);
+        std::cout << "here 4" << std::endl;
     }
  
     // clean up
@@ -195,6 +204,7 @@ int main(int argc, char **argv)
 void initialize(SDL_Renderer *renderer, AppData *data_ptr)
 {
     data_ptr->font = TTF_OpenFont("resrc/OpenSans-Regular.ttf", 16);
+    //std::cout << "i 1 \n" << std::endl;
     /*
     SDL_Surface *img_surf = IMG_Load("resrc/images/linux-penguin.png");
     data_ptr->penguin = SDL_CreateTextureFromSurface(renderer, img_surf);
@@ -288,59 +298,88 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr)
     data_ptr->snap_rect.h = 200;
     data_ptr->snap_selected = false;
     */
-    SDL_Color color = { 0, 0, 0 };
+    SDL_Color color = { 0, 0, 0 };//red, green, blue
+    //SDL_Color background_color = { 255, 255, 255 };//red, green, blue
     SDL_Surface *background_surf = TTF_RenderText_Solid(data_ptr->font, "Name                |Size     |Type      |User     |Permissions", color);
+    //std::cout << "i 2 \n" << std::endl;
     //What should be initialized besides the background?
     SDL_Surface *directory_surf = TTF_RenderText_Solid(data_ptr->font, data_ptr->curdir, color);
+    //std::cout << "i 3 \n" << std::endl;
 
     data_ptr->background = SDL_CreateTextureFromSurface(renderer, background_surf);
+    //std::cout << "i 4 \n" << std::endl;
     data_ptr->directory = SDL_CreateTextureFromSurface(renderer, directory_surf);
+    std::cout << "i 5 \n" << std::endl;
 
     SDL_FreeSurface(background_surf);
+    //std::cout << "i 6 \n" << std::endl;
     SDL_FreeSurface(directory_surf);
+    //std::cout << "i 7 \n" << std::endl;
 
     data_ptr->background_rect.x = 10;
     data_ptr->background_rect.y = 10;
     data_ptr->directory_rect.x = 10;
     data_ptr->directory_rect.y = 40;
 
+    //std::cout << "i 8 \n" << std::endl;
     SDL_QueryTexture(data_ptr->background, NULL, NULL, &(data_ptr->background_rect.w), &(data_ptr->background_rect.h));
+    //std::cout << "i 9 \n" << std::endl;
     SDL_QueryTexture(data_ptr->directory, NULL, NULL, &(data_ptr->directory_rect.w), &(data_ptr->directory_rect.h));
+    //std::cout << "i 10 \n" << std::endl;
     data_ptr->directory_selected = false;
 }
  
-void render(SDL_Renderer *renderer, AppData *data_ptr)
+void render(SDL_Renderer *renderer, AppData *data_ptr, std::vector<std::string> directories)
+//void render(SDL_Renderer *renderer, AppData *data_ptr)
 {
     // erase renderer content
     SDL_SetRenderDrawColor(renderer, 235, 235, 235, 255);
+    std::cout << "i 1 \n" << std::endl;
     SDL_RenderClear(renderer);
+    std::cout << "i 2 \n" << std::endl;
      
-    std::vector<std::string> directories = listDirectory(data_ptr->curdir);
+    //std::vector<std::string> directories = listDirectory(data_ptr->curdir);
+    std::cout << "i 3 \n" << std::endl;
+
     SDL_Color color = { 0, 0, 0 };
     SDL_RenderCopy(renderer, data_ptr->background, NULL, &(data_ptr->background_rect));
-    for(int i = 0; i < directories.size(); i++){
+    std::cout << "i 4 \n" << std::endl;
+    
+    for(int i = 0; i < (directories.begin() - directories.end()); i++){
+
+        std::cout << "i 5 \n" << std::endl;
         SDL_Surface *directory_surf = TTF_RenderText_Solid(data_ptr->font, directories[i].c_str(), color);
+        std::cout << "i 6 \n" << std::endl;
         data_ptr->sdl_names[i] = SDL_CreateTextureFromSurface(renderer, directory_surf);
+        std::cout << "i 7 \n" << std::endl;
         SDL_FreeSurface(directory_surf);
+        std::cout << "i 8 \n" << std::endl;
+
         if(i == 0){
             data_ptr->sdl_directory_rect[i].x = 10;
             data_ptr->sdl_directory_rect[i].y = 40;
+            std::cout << "i 9 \n" << std::endl;
         }else{
             data_ptr->sdl_directory_rect[i].x = data_ptr->sdl_directory_rect[i-1].x;
             data_ptr->sdl_directory_rect[i].x = data_ptr->sdl_directory_rect[i-1].y + 40;
+            std::cout << "i 10 \n" << std::endl;
         }
         SDL_QueryTexture(data_ptr->directory, NULL, NULL, &(data_ptr->sdl_directory_rect[i].w), &(data_ptr->sdl_directory_rect[i].h));
+        std::cout << "i 11 \n" << std::endl;
         SDL_RenderCopy(renderer, data_ptr->sdl_names[i], NULL, &(data_ptr->sdl_directory_rect[i]));
+        std::cout << "i 12 \n" << std::endl;
     }
  
     // show rendered frame
     SDL_RenderPresent(renderer);
+    std::cout << "i 13 \n" << std::endl;
 }
  
 void quit(AppData *data_ptr)
 {
     SDL_DestroyTexture(data_ptr->icon);
     SDL_DestroyTexture(data_ptr->background);
+    SDL_DestroyTexture(data_ptr->directory);
     TTF_CloseFont(data_ptr->font);
 }
 //How can we implement this function?
@@ -373,17 +412,19 @@ std::vector<std::string> listDirectory(std::string dirname)
         std::sort(files.begin(), files.end());
         int i;
         struct stat file_info;
-        //std::cout << "file size is \n" << files.size();
-        for(i =0; i < files.size(); i++ ){
+        std::cout << "here";
+        std::cout << "file size is " << files.size() << "\n";
+        for(i =0; i < (files.begin() - files.end()); i++ ){
             //printf("%s testing \n", files[i]);
 
-            //if(files[i].find('.') == std::string::npos){
+            if(files[i].find('.') == std::string::npos){
 
                 files.push_back(files[i]);
                 //std::cout << files[i] << std::endl;
 
-            //}
-            //std::cout << files[i] << std::endl;
+            }
+            std::cout << files[i] << std::endl;
+            //std::cout << "file size is " << files.size() << "\n";
             //names without a period is a folder, so grab theses.
             //std::cout << "entry is \n" << entry->d_name;
             //printf("%s\n, (%d bytes)\n", entry->d_name, entry->d_reclen);
@@ -391,6 +432,8 @@ std::vector<std::string> listDirectory(std::string dirname)
         }
         //printf("%s, (%d bytes)\n", entry->d_name, entry->d_reclen);
         //std::cout << entry->d_name << entry->d_reclen << std::endl;
+        
+        
         return files;
         
     }
