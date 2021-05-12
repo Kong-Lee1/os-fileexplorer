@@ -303,28 +303,22 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr)
     SDL_Surface *background_surf = TTF_RenderText_Solid(data_ptr->font, "Name                |Size     |Type      |User     |Permissions", color);
     //std::cout << "i 2 \n" << std::endl;
     //What should be initialized besides the background?
-    SDL_Surface *directory_surf = TTF_RenderText_Solid(data_ptr->font, data_ptr->curdir, color);
     //std::cout << "i 3 \n" << std::endl;
 
     data_ptr->background = SDL_CreateTextureFromSurface(renderer, background_surf);
     //std::cout << "i 4 \n" << std::endl;
-    data_ptr->directory = SDL_CreateTextureFromSurface(renderer, directory_surf);
     std::cout << "i 5 \n" << std::endl;
 
     SDL_FreeSurface(background_surf);
     //std::cout << "i 6 \n" << std::endl;
-    SDL_FreeSurface(directory_surf);
     //std::cout << "i 7 \n" << std::endl;
 
     data_ptr->background_rect.x = 10;
     data_ptr->background_rect.y = 10;
-    data_ptr->directory_rect.x = 10;
-    data_ptr->directory_rect.y = 40;
 
     //std::cout << "i 8 \n" << std::endl;
     SDL_QueryTexture(data_ptr->background, NULL, NULL, &(data_ptr->background_rect.w), &(data_ptr->background_rect.h));
     //std::cout << "i 9 \n" << std::endl;
-    SDL_QueryTexture(data_ptr->directory, NULL, NULL, &(data_ptr->directory_rect.w), &(data_ptr->directory_rect.h));
     //std::cout << "i 10 \n" << std::endl;
     data_ptr->directory_selected = false;
 }
@@ -345,7 +339,7 @@ void render(SDL_Renderer *renderer, AppData *data_ptr, std::vector<std::string> 
     SDL_RenderCopy(renderer, data_ptr->background, NULL, &(data_ptr->background_rect));
     std::cout << "i 4 \n" << std::endl;
     
-    for(int i = 0; i < (directories.begin() - directories.end()); i++){
+    for(int i = 0; i < directories.size(); i++){
 
         std::cout << "i 5 \n" << std::endl;
         SDL_Surface *directory_surf = TTF_RenderText_Solid(data_ptr->font, directories[i].c_str(), color);
