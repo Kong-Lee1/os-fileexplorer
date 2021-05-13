@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue May 11 22:36:29 2021
+# Make data base, printed on Wed May 12 21:37:59 2021
 
 # Variables
 
@@ -41,7 +41,7 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=ibus
 # makefile
-CURDIR := /home/kongphenglee/Desktop/File Explorer (1)/os-fileexplorer-1
+CURDIR := /home/rwhite/Documents/Assignments/CISC-310-assignment5/os-fileexplorer
 # makefile
 SHELL = /bin/sh
 # environment
@@ -49,7 +49,7 @@ SNAP_DATA = /var/snap/code/64
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:37286
+JOURNAL_STREAM = 8:38061
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -63,7 +63,7 @@ MAKEFILE_LIST :=  Makefile
 # environment
 GIO_LAUNCHED_DESKTOP_FILE = /var/lib/snapd/desktop/applications/code_code.desktop
 # environment
-USERNAME = kongphenglee
+USERNAME = rwhite
 # makefile (from 'Makefile', line 2)
 CXXFLAGS = -std=c++11
 # environment
@@ -77,13 +77,13 @@ _ = /snap/code/64/usr/share/code/code
 # makefile (from 'Makefile', line 11)
 OBJS = $(addprefix $(OBJDIR)/, main.o)
 # environment
-MANAGERPID = 1445
+MANAGERPID = 1858
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # makefile (from 'Makefile', line 15)
 mkdirs := 
 # environment
-VSCODE_CWD = /home/kongphenglee
+VSCODE_CWD = /home/rwhite
 # environment
 GSETTINGS_SCHEMA_DIR = /snap/code/64/usr/share/glib-2.0/schemas
 # default
@@ -93,11 +93,11 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/1737,unix/CISC310-VM:/tmp/.ICE-unix/1737
+SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/2132,unix/CISC310-VM:/tmp/.ICE-unix/2132
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
-GDK_PIXBUF_MODULE_FILE = /home/kongphenglee/snap/code/common/.cache/gdk-pixbuf-loaders.cache
+GDK_PIXBUF_MODULE_FILE = /home/rwhite/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
 SNAP = /snap/code/64
 # environment
@@ -109,9 +109,9 @@ VSCODE_LOG_STACK = false
 # environment
 DISABLE_WAYLAND = 1
 # environment
-VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=d8539125-14c8-44f8-84ec-a214e0dab703&iid=d8539125-14c8-44f8-84ec-a214e0dab703&sid=d8539125-14c8-44f8-84ec-a214e0dab703","uploadToServer":true}
+VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=92383a30-d053-4740-80d4-1d5f5437deb0&iid=92383a30-d053-4740-80d4-1d5f5437deb0&sid=92383a30-d053-4740-80d4-1d5f5437deb0","uploadToServer":true}
 # environment
-INVOCATION_ID = 5391639aecc9467899e73650d8a2f8e9
+INVOCATION_ID = e57110f0748148169e40ed85abd269b1
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/64/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # makefile (from 'Makefile', line 5)
@@ -125,7 +125,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 3130
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3056
 # automatic
 %F = $(notdir $%)
 # environment
@@ -137,11 +137,11 @@ VSCODE_PIPE_LOGGING = true
 # environment
 SNAP_INSTANCE_KEY = 
 # environment
-PWD = /home/kongphenglee/Desktop/File Explorer (1)/os-fileexplorer-1
+PWD = /home/rwhite/Documents/Assignments/CISC-310-assignment5/os-fileexplorer
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1665
+SSH_AGENT_PID = 2072
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -149,23 +149,23 @@ GTK_MODULES = gail:atk-bridge
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/services/extensions/node/extensionHostProcess
 # environment
-HOME = /home/kongphenglee
+HOME = /home/rwhite
 # environment
 LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 VSCODE_CLI = 1
 # environment
-LOGNAME = kongphenglee
+LOGNAME = rwhite
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # environment
-SNAP_CONTEXT = XveJ7-ongpIhQ1wgVYDofBAzWtZFRrGVoENHEr28FcaTvYqB8irb
+SNAP_CONTEXT = tXArPpEvPLoR7I85JgsQM-u0apXhkFc8nvF7EzlN1fz_PWuDNTX_
 # environment
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
-SNAP_USER_COMMON = /home/kongphenglee/snap/code/common
+SNAP_USER_COMMON = /home/rwhite/snap/code/common
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # environment
@@ -175,7 +175,7 @@ GNOME_DESKTOP_SESSION_ID = this-is-deprecated
 # environment
 MAKELEVEL := 0
 # environment
-SNAP_REAL_HOME = /home/kongphenglee
+SNAP_REAL_HOME = /home/rwhite
 # default
 MAKE = $(MAKE_COMMAND)
 # default
@@ -183,7 +183,7 @@ MAKECMDGOALS := all
 # environment
 QT_IM_MODULE = ibus
 # environment
-SNAP_USER_DATA = /home/kongphenglee/snap/code/64
+SNAP_USER_DATA = /home/rwhite/snap/code/64
 # environment
 SHLVL = 0
 # makefile (from 'Makefile', line 9)
@@ -191,13 +191,13 @@ BINDIR = bin
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-a8a6289c-1c2f-405e-851c-89b959be8f00.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-3efe9bfe-e1e5-4feb-98ba-04eba01c90dc.sock
 # makefile (from 'Makefile', line 12)
 EXEC = $(addprefix $(BINDIR)/, sdlexample)
 # default
 MAKE_VERSION := 4.2.1
 # environment
-USER = kongphenglee
+USER = rwhite
 # environment
 SNAP_REVISION = 64
 # makefile
@@ -211,13 +211,13 @@ XDG_CURRENT_DESKTOP = Unity
 # default
 MAKE_COMMAND := make
 # environment
-VSCODE_NODE_CACHED_DATA_DIR = /home/kongphenglee/.config/Code/CachedData/e713fe9b05fc24facbec8f34fb1017133858842b
+VSCODE_NODE_CACHED_DATA_DIR = /home/rwhite/.config/Code/CachedData/e713fe9b05fc24facbec8f34fb1017133858842b
 # default
 .VARIABLES := 
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-beb86aa1-1.56.1-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-487779dd-1.56.1-main.sock
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # makefile
@@ -227,7 +227,7 @@ MFLAGS = -pqrR
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-BREAKPAD_DUMP_LOCATION = /home/kongphenglee/.config/Code/exthost Crash Reports
+BREAKPAD_DUMP_LOCATION = /home/rwhite/.config/Code/exthost Crash Reports
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # environment
@@ -241,7 +241,7 @@ QT_ACCESSIBILITY = 1
 # default
 MAKEFILES := 
 # environment
-SNAP_COOKIE = XveJ7-ongpIhQ1wgVYDofBAzWtZFRrGVoENHEr28FcaTvYqB8irb
+SNAP_COOKIE = tXArPpEvPLoR7I85JgsQM-u0apXhkFc8nvF7EzlN1fz_PWuDNTX_
 # automatic
 <F = $(notdir $<)
 # environment
@@ -265,7 +265,7 @@ SNAP_REEXEC =
 # environment
 CHROME_DESKTOP = code-url-handler.desktop
 # environment
-WINDOWPATH = 2
+WINDOWPATH = 3
 # default
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
 # environment
@@ -275,9 +275,10 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 3175
+VSCODE_PID = 3103
 # variable set hash-table stats:
-# Load=133/1024=13%, Rehash=0, Collisions=29/177=16%
+# Load=133/1024=13%, Rehash=0, Collisions=28/171=16%
+ 
 
 # Pattern-specific Variable Values
 
@@ -285,14 +286,13 @@ VSCODE_PID = 3175
 
 # Directories
 
-# . (device 2053, inode 1313283): 11 files, no impossibilities.
-# src (device 2053, inode 1313964): 2 files, no impossibilities so far.
+# . (device 2053, inode 2361174): 11 files, no impossibilities.
+# src (device 2053, inode 2490527): 2 files, no impossibilities so far.
 
 # 13 files, no impossibilities in 2 directories.
 
 # Implicit Rules
 
- 
 obj/%.o: src/%.cpp
 #  recipe to execute (from 'Makefile', line 25):
 	$(CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
@@ -306,41 +306,21 @@ all: bin/sdlexample
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+#  Successfully updated.
 
 obj/main.o: src/main.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'main'
-#  Last modified 2021-05-11 22:36:18.640879779
+#  Last modified 2021-05-12 11:47:09.871579773
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := obj/main.o
-# automatic
-# % := 
-# automatic
-# * := main
-# automatic
-# + := src/main.cpp
-# automatic
-# | := 
-# automatic
-# < := src/main.cpp
-# automatic
-# ^ := src/main.cpp
-# automatic
-# ? := src/main.cpp
-# variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=2/16=12%
+#  Successfully updated.
 #  recipe to execute (from 'Makefile', line 25):
 	$(CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-05-11 22:36:18.640879779
+#  Last modified 2021-05-11 20:06:49.037085579
 #  File has been updated.
 #  Successfully updated.
 
@@ -352,11 +332,9 @@ Makefile:
 
 bin/sdlexample: obj/main.o
 #  Implicit rule search has not been done.
-#  Last modified 2021-05-11 22:36:18.640879779
+#  Last modified 2021-05-12 11:47:10.003567807
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+#  Successfully updated.
 #  recipe to execute (from 'Makefile', line 22):
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIB)
 
@@ -370,7 +348,7 @@ clean:
 # Not a target:
 src/main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-05-11 22:36:18.652879891
+#  Last modified 2021-05-12 11:47:06.69586505
 #  File has been updated.
 #  Successfully updated.
 
@@ -388,6 +366,6 @@ src/main.cpp:
 # strcache performance: lookups = 36 / hit rate = 33%
 # hash-table stats:
 # Load=24/8192=0%, Rehash=0, Collisions=1/36=3%
-# Finished Make data base on Tue May 11 22:36:29 2021
+# Finished Make data base on Wed May 12 21:37:59 2021
 
  
