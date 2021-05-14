@@ -17,49 +17,44 @@
 #define WIDTH 800
 #define HEIGHT 600
  
+typedef struct FileEntry {
+    SDL_Texture *name;
+    SDL_Rect name_rect;
+
+    SDL_Texture *file_size;
+    SDL_Rect size_rect;
+
+    SDL_Texture *permissions;
+    SDL_Rect permissions_rect;
+
+    int icon_index;
+    SDL_Rect icon_rect;
+
+    bool is_directory;
+
+    std::string full_path;
+
+} FileEntry;
+
 typedef struct AppData {
     TTF_Font *font;
-    SDL_Texture *icon;
+
+    SDL_Texture *icons[6];
+
     SDL_Texture *background;
-    SDL_Texture *directory;
 
-    std::vector<SDL_Texture*> sdl_permissions;//will need helper function to grab permissions
-    std::vector<SDL_Rect> sdl_directory_rect;
-    std::vector<SDL_Texture*> sdl_names;//will need helper function to grab names
-    std::vector<SDL_Texture*> sdl_file_size;//will need helper function to grab file_size
-    std::vector<SDL_Texture*> sdl_file_type;//will need helper function to grab file_size
+    std::vector<FileEntry*> files;
 
-
-    SDL_Rect directory_rect;
-    SDL_Rect icon_rect;
     SDL_Rect background_rect;
-    bool icon_selected;
-    bool directory_selected;
-
-    bool desktop_selected;
-    bool documents_selected;
-    bool downloads_selected;
-    bool music_selected;
-    bool pictures_selected;
-    bool public_drive_selected;
-    bool templates_selected;
-    bool videos_selected;
-    bool snap_selected;
 
     SDL_Point offset;
-    char *curdir;
 } AppData;
  
 void initialize(SDL_Renderer *renderer, AppData *data_ptr);
-void render(SDL_Renderer *renderer, AppData *data_ptr, std::vector<std::string> directories);
-//void render(SDL_Renderer *renderer, AppData *data_ptr);
+void render(SDL_Renderer *renderer, AppData *data_ptr);
 void quit(AppData *data_ptr);
 void listDirectory(std::string dirname);
-std::vector<std::string> getDirectoryVector(std::string dirname);
-std::vector<std::string> get_permissions(std::vector<SDL_Texture> directory);
-std::vector<std::string> get_names(std::vector<SDL_Texture> directory);
-std::vector<std::string> get_files_sizes(std::vector<SDL_Texture> directory);
-std::vector<std::string> get_file_types(std::vector<SDL_Texture> directory);
+std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_ptr, SDL_Renderer *renderer);
 
 char* permissions(char *file);
  
@@ -68,10 +63,6 @@ int main(int argc, char **argv)
     AppData data;
     DIR *dr = opendir("..");
     struct dirent *pent = NULL;
-    std::vector<std::string> directory_vector;
-    std::vector<std::string> desktop_folders_and_files;
-
-
 
     while(pent == readdir(dr)){
         if (pent == NULL){
@@ -80,20 +71,7 @@ int main(int argc, char **argv)
         }
         std::cout << pent->d_name << std::endl;
     }
-    char *home = getenv("HOME");
-    data.curdir = home;
-    printf("HOME: %s\n", home);
 
-    directory_vector = getDirectoryVector(home);
-
-    //get_permissions(home);
-    //permissions(home);
-
-    std::vector<std::string> strings;
-    for(int a = 0; a < 6; a++){
-        strings.push_back("aasdfasdfasdf");
-    }
- 
     // initializing SDL as Video
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
@@ -106,7 +84,7 @@ int main(int argc, char **argv)
  
     // initialize and perform rendering loop
     initialize(renderer, &data);
-    render(renderer, &data, strings);
+    render(renderer, &data);
     SDL_Event event;
     SDL_WaitEvent(&event);
     while (event.type != SDL_QUIT)
@@ -129,37 +107,44 @@ int main(int argc, char **argv)
                 break;
             */
             case SDL_MOUSEBUTTONDOWN:
-                //if the directory name is clicked ------------- need loop checking over all sdl_directory_rects
-                for(int i = 0; i < data.sdl_directory_rect.size(); i++)
+                //if the directory name is clicked
+                
+                for(int i = 0; i < data.files.size(); i++)
                 {
                     if (event.button.button == SDL_BUTTON_LEFT &&
-                        event.button.x >= data.sdl_directory_rect[i].x &&
-                        event.button.x <= data.sdl_directory_rect[i].x + data.sdl_directory_rect[i].w &&
-                        event.button.y >= data.sdl_directory_rect[i].y &&
-                        event.button.y <= data.sdl_directory_rect[i].y + data.sdl_directory_rect[i].h)
+                        event.button.x >= data.files[i]->name_rect.x &&
+                        event.button.x <= data.files[i]->name_rect.x + data.files[i]->name_rect.w &&
+                        event.button.y >= data.files[i]->name_rect.y &&
+                        event.button.y <= data.files[i]->name_rect.y + data.files[i]->name_rect.h)
                     {
                         //change listDirectory to open clicked directory, or execute file
-                        printf("directory clicked");
-                    }
-                    //if the icon is clicked
-                    else if (event.button.button == SDL_BUTTON_LEFT &&
-                        event.button.x >= data.icon_rect.x &&
-                        event.button.x <= data.icon_rect.x + data.icon_rect.w &&
-                        event.button.y >= data.icon_rect.y &&
-                        event.button.y <= data.icon_rect.y + data.icon_rect.h)
+                        if(data.files[i]->icon_index == 0){
+                            data.files = getDirectoryVector(data.files[i]->full_path, &data, renderer);
+                        }
+                        //execute file
+                        else{
+                            //fork, exec using xdg-open full_path
+                        }
+                    }else if (event.button.button == SDL_BUTTON_LEFT &&
+                        event.button.x >= data.files[i]->icon_rect.x &&
+                        event.button.x <= data.files[i]->icon_rect.x + data.files[i]->icon_rect.w &&
+                        event.button.y >= data.files[i]->icon_rect.y &&
+                        event.button.y <= data.files[i]->icon_rect.y + data.files[i]->icon_rect.h)
                     {
-                        data.icon_selected = true;
-                        data.offset.x = event.button.x - data.icon_rect.x;
-                        data.offset.y = event.button.y - data.icon_rect.y;
+                        //change listDirectory to open clicked directory
+                        if(data.files[i]->icon_index == 0){
+                            data.files = getDirectoryVector(data.files[i]->full_path, &data, renderer);
+                        }
+                        //execute file
+                        else{
+
+                        }
                     }
                 }
-                break;
-            case SDL_MOUSEBUTTONUP:
-                data.directory_selected = false;
-                data.icon_selected = false;
+                
                 break;
         }
-        render(renderer, &data, strings);
+        render(renderer, &data);
     }
  
     // clean up
@@ -177,102 +162,86 @@ int main(int argc, char **argv)
 void initialize(SDL_Renderer *renderer, AppData *data_ptr)
 {
     data_ptr->font = TTF_OpenFont("resrc/OpenSans-Regular.ttf", 16);
-    /*
-    SDL_Surface *img_surf = IMG_Load("resrc/images/linux-penguin.png");
-    data_ptr->penguin = SDL_CreateTextureFromSurface(renderer, img_surf);
-    SDL_FreeSurface(img_surf);
-    data_ptr->penguin_rect.x = 200;
-    data_ptr->penguin_rect.y = 100;
-    data_ptr->penguin_rect.w = 165;
-    data_ptr->penguin_rect.h = 200;
-    data_ptr->penguin_selected = false;
-    */
+    if(data_ptr->font == NULL){
+        printf("error loading font\n");
+    }
 
     /*
     SDL_Surface *desktop_surf = IMG_Load("resrc/images/Desktop-icon.png");
-    data_ptr->penguin = SDL_CreateTextureFromSurface(renderer, desktop_surf);
+    data_ptr->desktop = SDL_CreateTextureFromSurface(renderer, desktop_surf);
     SDL_FreeSurface(desktop_surf);
-    data_ptr->desktop_rect.x = 200;
-    data_ptr->desktop_rect.y = 100;
+    data_ptr->desktop_rect.x = 10;
+    data_ptr->desktop_rect.y = 40;
     data_ptr->desktop_rect.w = 165;
     data_ptr->desktop_rect.h = 200;
-    data_ptr->desktop_selected = false;
 
     SDL_Surface *documents_surf = IMG_Load("resrc/images/Documents-icon.png");
     data_ptr->documents = SDL_CreateTextureFromSurface(renderer, documents_surf);
     SDL_FreeSurface(documents_surf);
-    data_ptr->documents_rect.x = 200;
-    data_ptr->documents_rect.y = 100;
+    data_ptr->documents_rect.x = 10;
+    data_ptr->documents_rect.y = 80;
     data_ptr->documents_rect.w = 165;
     data_ptr->documents_rect.h = 200;
-    data_ptr->documents_selected = false;
 
     SDL_Surface *downloads_surf = IMG_Load("resrc/images/Downloads-icon.png");
     data_ptr->downloads = SDL_CreateTextureFromSurface(renderer, downloads_surf);
     SDL_FreeSurface(downloads_surf);
-    data_ptr->downloads_rect.x = 200;
-    data_ptr->downloads_rect.y = 100;
+    data_ptr->downloads_rect.x = 10;
+    data_ptr->downloads_rect.y = 120;
     data_ptr->downloads_rect.w = 165;
     data_ptr->downloads_rect.h = 200;
-    data_ptr->downloads_selected = false;
 
     SDL_Surface *music_surf = IMG_Load("resrc/images/Music-icon.png");
     data_ptr->music = SDL_CreateTextureFromSurface(renderer, music_surf);
     SDL_FreeSurface(music_surf);
-    data_ptr->music_rect.x = 200;
-    data_ptr->music_rect.y = 100;
+    data_ptr->music_rect.x = 10;
+    data_ptr->music_rect.y = 160;
     data_ptr->music_rect.w = 165;
     data_ptr->music_rect.h = 200;
-    data_ptr->music_selected = false;
 
     SDL_Surface *pictures_surf = IMG_Load("resrc/images/Pictures-icon.png");
     data_ptr->pictures = SDL_CreateTextureFromSurface(renderer, pictures_surf);
     SDL_FreeSurface(pictures_surf);
-    data_ptr->pictures_rect.x = 200;
-    data_ptr->pictures_rect.y = 100;
+    data_ptr->pictures_rect.x = 10;
+    data_ptr->pictures_rect.y = 200;
     data_ptr->pictures_rect.w = 165;
     data_ptr->pictures_rect.h = 200;
-    data_ptr->pictures_selected = false;
 
     SDL_Surface *public_drive_surf = IMG_Load("resrc/images/Public-icon.png");
     data_ptr->public_drive = SDL_CreateTextureFromSurface(renderer, public_drive_surf);
     SDL_FreeSurface(public_drive_surf);
-    data_ptr->public_drive_rect.x = 200;
-    data_ptr->public_drive_rect.y = 100;
+    data_ptr->public_drive_rect.x = 10;
+    data_ptr->public_drive_rect.y = 240;
     data_ptr->public_drive_rect.w = 165;
     data_ptr->public_drive_rect.h = 200;
-    data_ptr->public_drive_selected = false;
 
     SDL_Surface *templates_surf = IMG_Load("resrc/images/Templates-icon.png");
     data_ptr->templates = SDL_CreateTextureFromSurface(renderer, templates_surf);
     SDL_FreeSurface(templates_surf);
-    data_ptr->templates_rect.x = 200;
-    data_ptr->templates_rect.y = 100;
+    data_ptr->templates_rect.x = 10;
+    data_ptr->templates_rect.y = 280;
     data_ptr->templates_rect.w = 165;
     data_ptr->templates_rect.h = 200;
-    data_ptr->templates_selected = false;
 
     SDL_Surface *videos_surf = IMG_Load("resrc/images/Videos-icon.png");
     data_ptr->videos = SDL_CreateTextureFromSurface(renderer, videos_surf);
     SDL_FreeSurface(videos_surf);
-    data_ptr->videos_rect.x = 200;
-    data_ptr->videos_rect.y = 100;
+    data_ptr->videos_rect.x = 10;
+    data_ptr->videos_rect.y = 320;
     data_ptr->videos_rect.w = 165;
     data_ptr->videos_rect.h = 200;
-    data_ptr->videos_selected = false;
 
     SDL_Surface *snap_surf = IMG_Load("resrc/images/Snap-icon.png");
     data_ptr->snap = SDL_CreateTextureFromSurface(renderer, snap_surf);
-    SDL_FreeSurface(img_surf);
-    data_ptr->snap_rect.x = 200;
-    data_ptr->snap_rect.y = 100;
+    SDL_FreeSurface(snap_surf);
+    data_ptr->snap_rect.x = 10;
+    data_ptr->snap_rect.y = 360;
     data_ptr->snap_rect.w = 165;
     data_ptr->snap_rect.h = 200;
-    data_ptr->snap_selected = false;
     */
     SDL_Color color = { 0, 0, 0 };//red, green, blue
     //SDL_Color background_color = { 255, 255, 255 };//red, green, blue
-    SDL_Surface *background_surf = TTF_RenderText_Solid(data_ptr->font, "Name                |Size     |Type      |User     |Permissions", color);
+    SDL_Surface *background_surf = TTF_RenderText_Solid(data_ptr->font, "Icon | Name", color);
 
     data_ptr->background = SDL_CreateTextureFromSurface(renderer, background_surf);
 
@@ -282,39 +251,34 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr)
     data_ptr->background_rect.y = 10;
 
     SDL_QueryTexture(data_ptr->background, NULL, NULL, &(data_ptr->background_rect.w), &(data_ptr->background_rect.h));
-    data_ptr->directory_selected = false;
+
+    char *home = getenv("HOME");
+    printf("HOME: %s\n", home);
+
+    data_ptr->files = getDirectoryVector(home, data_ptr, renderer);
 }
 
 // 1. Render only renders the first element in the vector
 // 2. General process for populating the SDL window
-void render(SDL_Renderer *renderer, AppData *data_ptr, std::vector<std::string> directories)
+// 3. Icons are not being printed at all
+void render(SDL_Renderer *renderer, AppData *data_ptr)
 {
     // erase renderer content
     SDL_SetRenderDrawColor(renderer, 235, 235, 235, 255);
     SDL_RenderClear(renderer);
 
     SDL_Color color = { 0, 0, 0 };
+    SDL_Rect rect;    rect.x = 200;    rect.y = 100;    rect.w = 165;    rect.h = 20;
     SDL_RenderCopy(renderer, data_ptr->background, NULL, &(data_ptr->background_rect));
-    for(int i = 0; i < 5; i++){
-
-        SDL_Surface *directory_surf = TTF_RenderText_Solid(data_ptr->font, directories[i].c_str(), color);
-        data_ptr->sdl_names.push_back(SDL_CreateTextureFromSurface(renderer, directory_surf));
-        SDL_FreeSurface(directory_surf);
-        SDL_Rect temp;
-        data_ptr->sdl_directory_rect.push_back(temp);
-
-        //For first directory on page
-        if(i == 0){
-            data_ptr->sdl_directory_rect[i].x = 10;
-            data_ptr->sdl_directory_rect[i].y = 40;
-            //std::cout << "i 9 \n" << std::endl;
-        }else{
-            //All other directories' x and y values 
-            data_ptr->sdl_directory_rect[i].x = data_ptr->sdl_directory_rect[i-1].x;
-            data_ptr->sdl_directory_rect[i].x = data_ptr->sdl_directory_rect[i-1].y + 40;
+    printf("%d files\n", data_ptr->files.size());
+    for(int i = 0; i < data_ptr->files.size(); i++){
+        if(data_ptr->files[i]->icon_index == 0){
+            SDL_SetRenderDrawColor(renderer, 0, 0, 235, 255);
+        }else {
+            SDL_SetRenderDrawColor(renderer, 235, 0, 0, 255);
         }
-        SDL_QueryTexture(data_ptr->sdl_names[i], NULL, NULL, &(data_ptr->sdl_directory_rect[i].w), &(data_ptr->sdl_directory_rect[i].h));
-        SDL_RenderCopy(renderer, data_ptr->sdl_names[i], NULL, &(data_ptr->sdl_directory_rect[i]));
+        SDL_RenderFillRect(renderer, &(data_ptr->files[i]->icon_rect));
+        SDL_RenderCopy(renderer, data_ptr->files[i]->name, NULL, &(data_ptr->files[i]->name_rect));//Only this should be in this loop
     }
  
     // show rendered frame
@@ -323,96 +287,87 @@ void render(SDL_Renderer *renderer, AppData *data_ptr, std::vector<std::string> 
  
 void quit(AppData *data_ptr)
 {
-    SDL_DestroyTexture(data_ptr->icon);
     SDL_DestroyTexture(data_ptr->background);
-    SDL_DestroyTexture(data_ptr->directory);
+    for(int i = 0; i < data_ptr->files.size(); i++){
+        SDL_DestroyTexture(data_ptr->files[i]->name);
+    }
     TTF_CloseFont(data_ptr->font);
 }
-
-
-void listDirectory(std::string dirname)
+//Putting full path in dirname parameter moves it to new directory
+std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_ptr, SDL_Renderer *renderer)
 {
     struct stat info;
     int err = stat(dirname.c_str(), &info);
-    if (err == 0 && S_ISDIR(info.st_mode))
-    {
-        std::vector<std::string> files;
-        DIR* dir = opendir(dirname.c_str());
-        // TODO: modify to be able to print all entries in directory in alphabetical order
-        //       in addition to file name, also print file size (or 'directory' if entry is a folder)
-        //       Example output:
-        //         ls.cpp (693 bytes
-        //         my_file.txt (62 bytes)
-        //         OS Files (directory)
-        struct dirent *entry;
-        struct dirent *holder;
-
-        while ((entry = readdir(dir)) != NULL) {
- 
-            files.push_back(entry->d_name);
-        }
-        closedir(dir);//at this point all the names are stored into the vector
-
-        std::sort(files.begin(), files.end());//file names are sorted
-
-        int i;
-        struct stat file_info;
-        for(i =0; i < files.size(); i++ ){
-
-            err = stat((dirname + "/" + files[i]).c_str(), &file_info);
-
-            if(err){
-
-                fprintf(stderr, "uh oh, you shouldn't have gotten here \n");
-
-            }else{
-
-                if(S_ISDIR(file_info.st_mode))//if it is a directory, we print that it is a directory 
-                {
-                    printf("%s (directory)\n", files[i].c_str());
-
-                }else{//else we print that it is not
-
-                    printf("%s (%ld bytes)\n", files[i].c_str(), file_info.st_size);
-                }
-
-            }
-        }
-    }
-    else
-    {
-        fprintf(stderr, "Error: directory '%s' not found\n", dirname.c_str());
-    }
-}
-
-std::vector<std::string> getDirectoryVector(std::string dirname)
-{
-    struct stat info;
-    int err = stat(dirname.c_str(), &info);
-    std::vector<std::string> files;
+    std::vector<FileEntry*> files;
     if (err == 0 && S_ISDIR(info.st_mode))
     {
 
         DIR* dir = opendir(dirname.c_str());
-        // TODO: modify to be able to print all entries in directory in alphabetical order
-        //       in addition to file name, also print file size (or 'directory' if entry is a folder)
-        //       Example output:
-        //         ls.cpp (693 bytes
-        //         my_file.txt (62 bytes)
-        //         OS Files (directory)
         struct dirent *entry;
         struct dirent *holder;
+        struct stat file_info;//Not sure if this ever is filled in order to check type
+
+        std::vector<std::string> directory_strings;
 
         while ((entry = readdir(dir)) != NULL) {
 
             //if(strcmp(entry.d_name[]))
-            files.push_back(entry->d_name);
+            directory_strings.push_back(entry->d_name);
         }
+        for(int i = 0; i < directory_strings.size(); i++){
+            printf("%s\n", directory_strings[i].c_str());
+        }
+        printf("--------------------------------\n");
         closedir(dir);//at this point all the names are stored into the vector
 
-        std::sort(files.begin(), files.end());//file names are sorted
+        std::sort(directory_strings.begin(), directory_strings.end());//file names are sorted
+        int a = 0;
+        for(int i = 0; i < directory_strings.size(); i++ ){
+            if(directory_strings[i][0] != '.' || directory_strings[i] == "..")
+            {
+                std::string full_path = dirname + "/" + directory_strings[i];
+                
+                //file_info = dirname.;
+                printf("%s\n", full_path.c_str());
 
-        return files;
+                err = stat(full_path.c_str(), &file_info);
+
+                if(err){
+
+                    fprintf(stderr, "uh oh, you shouldn't have gotten here \n");
+
+                }else{
+                    FileEntry* file = new FileEntry();
+                        file->full_path = full_path;
+                        //Create textures, rects, etc. separating with type
+                        SDL_Color color = { 0, 0, 0 };
+                        SDL_Surface *surface = TTF_RenderText_Solid(data_ptr->font, directory_strings[i].c_str(), color);
+                        file->name = SDL_CreateTextureFromSurface(renderer, surface);
+                        SDL_FreeSurface(surface);
+                        //For first directory on page
+                        file->name_rect.x = 60;
+                        file->name_rect.y = 40 * a + 40;
+
+                        SDL_QueryTexture(file->name, NULL, NULL, &(file->name_rect.w), &(file->name_rect.h));
+
+                        file->icon_rect.x = 10;
+                        file->icon_rect.y = file->name_rect.y;
+                        file->icon_rect.h = 30;
+                        file->icon_rect.w = 30;
+
+                    if(S_ISDIR(file_info.st_mode) /*&& (directory_strings[i].find('.') != std::string::npos)*/)//if it is a directory-------------- ALWAYS FALSE (do we even need this?)
+                    {
+                        file->icon_index = 0;
+
+                    }else{//checks if it's a different type, like permissions and extension
+                        file->icon_index = 1;
+                    }
+                    files.push_back(file);
+
+                    a++;
+                }
+            }
+        }
 
     }else
     {
@@ -513,18 +468,6 @@ char* permissions(char *file){
         return strerror(errno);
     }   
 }
-
-//to grab folders/files names
-std::vector<std::string> get_names(std::vector<SDL_Texture> directories);
-
-//to grab file's sizes
-std::vector<std::string> get_files_sizes(std::vector<SDL_Texture> directories);
-
-//to grab file's types
-std::vector<std::string> get_file_types(std::vector<SDL_Texture> directories);
-
-std::vector<std::string> get_permissions(std::vector<SDL_Texture> directories);
-
 
 
 
