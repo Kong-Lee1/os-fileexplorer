@@ -137,7 +137,13 @@ int main(int argc, char **argv)
                         }
                         //execute file
                         else{
-
+                            int pid = fork();
+                            //child process
+                            if (pid == 0)
+                            {
+                                std::string command = "xdg-open *";
+                                execl("/usr/bin/xdg-open", "xdg-open", data.files[i]->full_path.c_str(), (char *)0);
+                            }
                         }
                     }
                 }
@@ -166,81 +172,31 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr)
         printf("error loading font\n");
     }
 
-    /*
-    SDL_Surface *desktop_surf = IMG_Load("resrc/images/Desktop-icon.png");
-    data_ptr->desktop = SDL_CreateTextureFromSurface(renderer, desktop_surf);
-    SDL_FreeSurface(desktop_surf);
-    data_ptr->desktop_rect.x = 10;
-    data_ptr->desktop_rect.y = 40;
-    data_ptr->desktop_rect.w = 165;
-    data_ptr->desktop_rect.h = 200;
+    SDL_Surface *directory_surf = IMG_Load("resrc/Images/directory-icon.png");
+    data_ptr->icons[0] = SDL_CreateTextureFromSurface(renderer, directory_surf);
+    SDL_FreeSurface(directory_surf);
 
-    SDL_Surface *documents_surf = IMG_Load("resrc/images/Documents-icon.png");
-    data_ptr->documents = SDL_CreateTextureFromSurface(renderer, documents_surf);
-    SDL_FreeSurface(documents_surf);
-    data_ptr->documents_rect.x = 10;
-    data_ptr->documents_rect.y = 80;
-    data_ptr->documents_rect.w = 165;
-    data_ptr->documents_rect.h = 200;
+    SDL_Surface *executable_surf = IMG_Load("resrc/Images/executable-icon.png");
+    data_ptr->icons[1] = SDL_CreateTextureFromSurface(renderer, executable_surf);
+    SDL_FreeSurface(executable_surf);
 
-    SDL_Surface *downloads_surf = IMG_Load("resrc/images/Downloads-icon.png");
-    data_ptr->downloads = SDL_CreateTextureFromSurface(renderer, downloads_surf);
-    SDL_FreeSurface(downloads_surf);
-    data_ptr->downloads_rect.x = 10;
-    data_ptr->downloads_rect.y = 120;
-    data_ptr->downloads_rect.w = 165;
-    data_ptr->downloads_rect.h = 200;
+    SDL_Surface *image_surf = IMG_Load("resrc/Images/image-icon.png");
+    data_ptr->icons[2] = SDL_CreateTextureFromSurface(renderer, image_surf);
+    SDL_FreeSurface(image_surf);
 
-    SDL_Surface *music_surf = IMG_Load("resrc/images/Music-icon.png");
-    data_ptr->music = SDL_CreateTextureFromSurface(renderer, music_surf);
-    SDL_FreeSurface(music_surf);
-    data_ptr->music_rect.x = 10;
-    data_ptr->music_rect.y = 160;
-    data_ptr->music_rect.w = 165;
-    data_ptr->music_rect.h = 200;
+    SDL_Surface *video_surf = IMG_Load("resrc/Images/video-icon.png");
+    data_ptr->icons[3] = SDL_CreateTextureFromSurface(renderer, video_surf);
+    SDL_FreeSurface(video_surf);
 
-    SDL_Surface *pictures_surf = IMG_Load("resrc/images/Pictures-icon.png");
-    data_ptr->pictures = SDL_CreateTextureFromSurface(renderer, pictures_surf);
-    SDL_FreeSurface(pictures_surf);
-    data_ptr->pictures_rect.x = 10;
-    data_ptr->pictures_rect.y = 200;
-    data_ptr->pictures_rect.w = 165;
-    data_ptr->pictures_rect.h = 200;
+    SDL_Surface *code_surf = IMG_Load("resrc/Images/code-icon.png");
+    data_ptr->icons[4] = SDL_CreateTextureFromSurface(renderer, code_surf);
+    SDL_FreeSurface(code_surf);
 
-    SDL_Surface *public_drive_surf = IMG_Load("resrc/images/Public-icon.png");
-    data_ptr->public_drive = SDL_CreateTextureFromSurface(renderer, public_drive_surf);
-    SDL_FreeSurface(public_drive_surf);
-    data_ptr->public_drive_rect.x = 10;
-    data_ptr->public_drive_rect.y = 240;
-    data_ptr->public_drive_rect.w = 165;
-    data_ptr->public_drive_rect.h = 200;
+    SDL_Surface *other_surf = IMG_Load("resrc/Images/other-icon.jpg");
+    data_ptr->icons[5] = SDL_CreateTextureFromSurface(renderer, other_surf);
+    SDL_FreeSurface(other_surf);
 
-    SDL_Surface *templates_surf = IMG_Load("resrc/images/Templates-icon.png");
-    data_ptr->templates = SDL_CreateTextureFromSurface(renderer, templates_surf);
-    SDL_FreeSurface(templates_surf);
-    data_ptr->templates_rect.x = 10;
-    data_ptr->templates_rect.y = 280;
-    data_ptr->templates_rect.w = 165;
-    data_ptr->templates_rect.h = 200;
-
-    SDL_Surface *videos_surf = IMG_Load("resrc/images/Videos-icon.png");
-    data_ptr->videos = SDL_CreateTextureFromSurface(renderer, videos_surf);
-    SDL_FreeSurface(videos_surf);
-    data_ptr->videos_rect.x = 10;
-    data_ptr->videos_rect.y = 320;
-    data_ptr->videos_rect.w = 165;
-    data_ptr->videos_rect.h = 200;
-
-    SDL_Surface *snap_surf = IMG_Load("resrc/images/Snap-icon.png");
-    data_ptr->snap = SDL_CreateTextureFromSurface(renderer, snap_surf);
-    SDL_FreeSurface(snap_surf);
-    data_ptr->snap_rect.x = 10;
-    data_ptr->snap_rect.y = 360;
-    data_ptr->snap_rect.w = 165;
-    data_ptr->snap_rect.h = 200;
-    */
-    SDL_Color color = { 0, 0, 0 };//red, green, blue
-    //SDL_Color background_color = { 255, 255, 255 };//red, green, blue
+    SDL_Color color = { 0, 0, 0 };
     SDL_Surface *background_surf = TTF_RenderText_Solid(data_ptr->font, "Icon | Name", color);
 
     data_ptr->background = SDL_CreateTextureFromSurface(renderer, background_surf);
@@ -258,9 +214,6 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr)
     data_ptr->files = getDirectoryVector(home, data_ptr, renderer);
 }
 
-// 1. Render only renders the first element in the vector
-// 2. General process for populating the SDL window
-// 3. Icons are not being printed at all
 void render(SDL_Renderer *renderer, AppData *data_ptr)
 {
     // erase renderer content
@@ -270,15 +223,22 @@ void render(SDL_Renderer *renderer, AppData *data_ptr)
     SDL_Color color = { 0, 0, 0 };
     SDL_Rect rect;    rect.x = 200;    rect.y = 100;    rect.w = 165;    rect.h = 20;
     SDL_RenderCopy(renderer, data_ptr->background, NULL, &(data_ptr->background_rect));
-    printf("%d files\n", data_ptr->files.size());
+
     for(int i = 0; i < data_ptr->files.size(); i++){
         if(data_ptr->files[i]->icon_index == 0){
-            SDL_SetRenderDrawColor(renderer, 0, 0, 235, 255);
-        }else {
-            SDL_SetRenderDrawColor(renderer, 235, 0, 0, 255);
+            SDL_RenderCopy(renderer, data_ptr->icons[0], NULL, &(data_ptr->files[i]->icon_rect));
+        }else if(data_ptr->files[i]->icon_index == 1){
+            SDL_RenderCopy(renderer, data_ptr->icons[1], NULL, &(data_ptr->files[i]->icon_rect));
+        }else if(data_ptr->files[i]->icon_index == 2){
+            SDL_RenderCopy(renderer, data_ptr->icons[2], NULL, &(data_ptr->files[i]->icon_rect));
+        }else if(data_ptr->files[i]->icon_index == 3){
+            SDL_RenderCopy(renderer, data_ptr->icons[3], NULL, &(data_ptr->files[i]->icon_rect));
+        }else if(data_ptr->files[i]->icon_index == 4){
+            SDL_RenderCopy(renderer, data_ptr->icons[4], NULL, &(data_ptr->files[i]->icon_rect));
+        }else if(data_ptr->files[i]->icon_index == 5){
+            SDL_RenderCopy(renderer, data_ptr->icons[5], NULL, &(data_ptr->files[i]->icon_rect));
         }
-        SDL_RenderFillRect(renderer, &(data_ptr->files[i]->icon_rect));
-        SDL_RenderCopy(renderer, data_ptr->files[i]->name, NULL, &(data_ptr->files[i]->name_rect));//Only this should be in this loop
+        SDL_RenderCopy(renderer, data_ptr->files[i]->name, NULL, &(data_ptr->files[i]->name_rect));
     }
  
     // show rendered frame
@@ -305,7 +265,7 @@ std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_pt
         DIR* dir = opendir(dirname.c_str());
         struct dirent *entry;
         struct dirent *holder;
-        struct stat file_info;//Not sure if this ever is filled in order to check type
+        struct stat file_info;
 
         std::vector<std::string> directory_strings;
 
@@ -314,10 +274,7 @@ std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_pt
             //if(strcmp(entry.d_name[]))
             directory_strings.push_back(entry->d_name);
         }
-        for(int i = 0; i < directory_strings.size(); i++){
-            printf("%s\n", directory_strings[i].c_str());
-        }
-        printf("--------------------------------\n");
+
         closedir(dir);//at this point all the names are stored into the vector
 
         std::sort(directory_strings.begin(), directory_strings.end());//file names are sorted
@@ -326,9 +283,6 @@ std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_pt
             if(directory_strings[i][0] != '.' || directory_strings[i] == "..")
             {
                 std::string full_path = dirname + "/" + directory_strings[i];
-                
-                //file_info = dirname.;
-                printf("%s\n", full_path.c_str());
 
                 err = stat(full_path.c_str(), &file_info);
 
@@ -355,12 +309,43 @@ std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_pt
                         file->icon_rect.h = 30;
                         file->icon_rect.w = 30;
 
-                    if(S_ISDIR(file_info.st_mode) /*&& (directory_strings[i].find('.') != std::string::npos)*/)//if it is a directory-------------- ALWAYS FALSE (do we even need this?)
+                    if(S_ISDIR(file_info.st_mode) )//if it is a directory
                     {
                         file->icon_index = 0;
 
-                    }else{//checks if it's a different type, like permissions and extension
+                    //checks if it's an executable
+                    }else if((file_info.st_mode & S_IEXEC) != 0){
                         file->icon_index = 1;
+
+                    //checks if it's an image
+                    }else if(full_path.substr(full_path.find_last_of(".") + 1) == "jpg" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "jpeg" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "png" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "tif" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "tiff" ||
+                                full_path.substr(full_path.find_last_of(".") + 1) == "gif"){
+                        file->icon_index = 2;
+
+                    //checks if it's a video
+                    }else if(full_path.substr(full_path.find_last_of(".") + 1) == "mp4" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "mov" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "mkv" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "avi" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "webm"){
+                        file->icon_index = 3;
+
+                    //checks if it's a code file
+                    }else if(full_path.substr(full_path.find_last_of(".") + 1) == "h" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "c" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "cpp" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "py" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "java" || 
+                                full_path.substr(full_path.find_last_of(".") + 1) == "js"){
+                        file->icon_index = 4;
+
+                    }else{//checks if it's something else
+                        file->icon_index = 5;
+
                     }
                     files.push_back(file);
 
