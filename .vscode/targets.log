@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 14 14:37:23 2021
+# Make data base, printed on Sun May 16 22:10:27 2021
 
 # Variables
 
@@ -41,7 +41,7 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=ibus
 # makefile
-CURDIR := /home/rwhite/Documents/Assignments/CISC-310-assignment5-1/os-fileexplorer
+CURDIR := /home/rwhite/Documents/Assignments/CISC-310-assignment5/os-fileexplorer
 # makefile
 SHELL = /bin/sh
 # environment
@@ -49,7 +49,7 @@ SNAP_DATA = /var/snap/code/65
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:34406
+JOURNAL_STREAM = 8:36108
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -77,7 +77,7 @@ _ = /snap/code/65/usr/share/code/code
 # makefile (from 'Makefile', line 11)
 OBJS = $(addprefix $(OBJDIR)/, main.o)
 # environment
-MANAGERPID = 1334
+MANAGERPID = 1379
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # makefile (from 'Makefile', line 15)
@@ -93,7 +93,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/1613,unix/CISC310-VM:/tmp/.ICE-unix/1613
+SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/1652,unix/CISC310-VM:/tmp/.ICE-unix/1652
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -111,7 +111,7 @@ DISABLE_WAYLAND = 1
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=92383a30-d053-4740-80d4-1d5f5437deb0&iid=92383a30-d053-4740-80d4-1d5f5437deb0&sid=92383a30-d053-4740-80d4-1d5f5437deb0","uploadToServer":true}
 # environment
-INVOCATION_ID = 18e0848e8ecc4cd2a3ea27a734182a36
+INVOCATION_ID = 4e9d1a5603da4477a3f2aad8b9cf571a
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/65/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # makefile (from 'Makefile', line 5)
@@ -125,7 +125,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 7231
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2595
 # automatic
 %F = $(notdir $%)
 # environment
@@ -137,11 +137,11 @@ VSCODE_PIPE_LOGGING = true
 # environment
 SNAP_INSTANCE_KEY = 
 # environment
-PWD = /home/rwhite/Documents/Assignments/CISC-310-assignment5-1/os-fileexplorer
+PWD = /home/rwhite/Documents/Assignments/CISC-310-assignment5/os-fileexplorer
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1553
+SSH_AGENT_PID = 1591
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -191,7 +191,7 @@ BINDIR = bin
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-d91012cb-1cae-400f-bfdd-60ec05ae787e.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-abd59764-b505-4671-9d24-cf61ee735b25.sock
 # makefile (from 'Makefile', line 12)
 EXEC = $(addprefix $(BINDIR)/, sdlexample)
 # default
@@ -275,10 +275,10 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 7273
+VSCODE_PID = 2638
 # variable set hash-table stats:
+# Load=133/1024=13%, Rehash=0, Collisions=29/177=16%
  
-# Load=133/1024=13%, Rehash=0, Collisions=28/177=16%
 
 # Pattern-specific Variable Values
 
@@ -313,17 +313,29 @@ all: bin/sdlexample
 obj/main.o: src/main.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'main'
-#  Last modified 2021-05-14 14:37:17.421993245
+#  Last modified 2021-05-16 22:08:30.774504874
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := obj/main.o
+# automatic
+# % := 
+# automatic
+# * := main
+# automatic
+# + := src/main.cpp
+# automatic
+# | := 
+# automatic
+# < := src/main.cpp
+# automatic
+# ^ := src/main.cpp
+# automatic
+# ? := src/main.cpp
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=2/16=12%
 #  recipe to execute (from 'Makefile', line 25):
 	$(CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
-
-# Not a target:
-.SUFFIXES:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
 
 # Not a target:
 Makefile:
@@ -340,28 +352,11 @@ Makefile:
 
 bin/sdlexample: obj/main.o
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: ''
-#  Last modified 2021-05-14 14:37:17.417993242
+#  Last modified 2021-05-16 22:08:30.974507833
 #  File has been updated.
 #  Needs to be updated (-q is set).
-# automatic
-# @ := bin/sdlexample
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := obj/main.o
-# automatic
-# | := 
-# automatic
-# < := obj/main.o
-# automatic
-# ^ := obj/main.o
-# automatic
-# ? := obj/main.o
 # variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/16=6%
+# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
 #  recipe to execute (from 'Makefile', line 22):
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIB)
 
@@ -375,12 +370,12 @@ clean:
 # Not a target:
 src/main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-05-14 14:37:17.421993245
+#  Last modified 2021-05-16 22:10:19.980138085
 #  File has been updated.
 #  Successfully updated.
 
 # files hash-table stats:
-# Load=8/1024=1%, Rehash=0, Collisions=0/26=0%
+# Load=8/1024=1%, Rehash=0, Collisions=0/25=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
@@ -390,9 +385,9 @@ src/main.cpp:
 # strcache buffers: 1 (0) / strings = 24 / storage = 195 B / avg = 8 B
 # current buf: size = 8162 B / used = 195 B / count = 24 / avg = 8 B
 
-# strcache performance: lookups = 37 / hit rate = 35%
+# strcache performance: lookups = 36 / hit rate = 33%
 # hash-table stats:
-# Load=24/8192=0%, Rehash=0, Collisions=1/37=3%
-# Finished Make data base on Fri May 14 14:37:23 2021
+# Load=24/8192=0%, Rehash=0, Collisions=1/36=3%
+# Finished Make data base on Sun May 16 22:10:27 2021
 
  

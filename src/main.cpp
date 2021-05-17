@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -30,7 +31,7 @@ typedef struct FileEntry {
     int icon_index;
     SDL_Rect icon_rect;
 
-    bool is_directory;
+    bool is_directory = false;
 
     std::string full_path;
 
@@ -55,8 +56,9 @@ void render(SDL_Renderer *renderer, AppData *data_ptr);
 void quit(AppData *data_ptr);
 void listDirectory(std::string dirname);
 std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_ptr, SDL_Renderer *renderer);
+char* readableFileSize(double size, char *buf);
 
-char* permissions(char *file);
+char* permissions(const char *file);
  
 int main(int argc, char **argv)
 {
@@ -123,7 +125,13 @@ int main(int argc, char **argv)
                         }
                         //execute file
                         else{
-                            //fork, exec using xdg-open full_path
+                            int pid = fork();
+                            //child process
+                            if (pid == 0)
+                            {
+                                std::string command = "xdg-open *";
+                                execl("/usr/bin/xdg-open", "xdg-open", data.files[i]->full_path.c_str(), (char *)0);
+                            }
                         }
                     }else if (event.button.button == SDL_BUTTON_LEFT &&
                         event.button.x >= data.files[i]->icon_rect.x &&
@@ -197,7 +205,7 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr)
     SDL_FreeSurface(other_surf);
 
     SDL_Color color = { 0, 0, 0 };
-    SDL_Surface *background_surf = TTF_RenderText_Solid(data_ptr->font, "Icon | Name", color);
+    SDL_Surface *background_surf = TTF_RenderText_Solid(data_ptr->font, "Icon | Name                                                                        |Size               |Permissions", color);
 
     data_ptr->background = SDL_CreateTextureFromSurface(renderer, background_surf);
 
@@ -237,6 +245,10 @@ void render(SDL_Renderer *renderer, AppData *data_ptr)
             SDL_RenderCopy(renderer, data_ptr->icons[4], NULL, &(data_ptr->files[i]->icon_rect));
         }else if(data_ptr->files[i]->icon_index == 5){
             SDL_RenderCopy(renderer, data_ptr->icons[5], NULL, &(data_ptr->files[i]->icon_rect));
+        }
+        if(!data_ptr->files[i]->is_directory){
+            SDL_RenderCopy(renderer, data_ptr->files[i]->file_size, NULL, &(data_ptr->files[i]->size_rect));
+            SDL_RenderCopy(renderer, data_ptr->files[i]->permissions, NULL, &(data_ptr->files[i]->permissions_rect));
         }
         SDL_RenderCopy(renderer, data_ptr->files[i]->name, NULL, &(data_ptr->files[i]->name_rect));
     }
@@ -293,8 +305,10 @@ std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_pt
                 }else{
                     FileEntry* file = new FileEntry();
                         file->full_path = full_path;
+
                         //Create textures, rects, etc. separating with type
                         SDL_Color color = { 0, 0, 0 };
+                        
                         SDL_Surface *surface = TTF_RenderText_Solid(data_ptr->font, directory_strings[i].c_str(), color);
                         file->name = SDL_CreateTextureFromSurface(renderer, surface);
                         SDL_FreeSurface(surface);
@@ -312,40 +326,68 @@ std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_pt
                     if(S_ISDIR(file_info.st_mode) )//if it is a directory
                     {
                         file->icon_index = 0;
+                        file->is_directory = true;
 
                     //checks if it's an executable
-                    }else if((file_info.st_mode & S_IEXEC) != 0){
-                        file->icon_index = 1;
+                    }else { 
+                        SDL_Color color = { 0, 0, 0 };
 
-                    //checks if it's an image
-                    }else if(full_path.substr(full_path.find_last_of(".") + 1) == "jpg" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "jpeg" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "png" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "tif" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "tiff" ||
-                                full_path.substr(full_path.find_last_of(".") + 1) == "gif"){
-                        file->icon_index = 2;
+                        //printing file size
+                        std::ifstream in_file(full_path, std::ios::binary);
+                        in_file.seekg(0, std::ios::end);
+                        int file_size = in_file.tellg();
 
-                    //checks if it's a video
-                    }else if(full_path.substr(full_path.find_last_of(".") + 1) == "mp4" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "mov" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "mkv" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "avi" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "webm"){
-                        file->icon_index = 3;
+                        char buf[20];
+                        readableFileSize(file_info.st_size, buf); 
+                        std::cout << "file size = " << file_size << " bytes" << "\n";
+                        SDL_Surface *size = TTF_RenderText_Solid(data_ptr->font, buf, color);
+                        file->file_size = SDL_CreateTextureFromSurface(renderer, size);
+                        SDL_FreeSurface(size);
+                        file->size_rect.x = 400;
+                        file->size_rect.y = file->name_rect.y;
+                        SDL_QueryTexture(file->file_size, NULL, NULL, &(file->size_rect.w), &(file->size_rect.h));
+                        
 
-                    //checks if it's a code file
-                    }else if(full_path.substr(full_path.find_last_of(".") + 1) == "h" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "c" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "cpp" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "py" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "java" || 
-                                full_path.substr(full_path.find_last_of(".") + 1) == "js"){
-                        file->icon_index = 4;
+                        SDL_Surface *permissions_surf = TTF_RenderText_Solid(data_ptr->font, permissions(full_path.c_str()), color);
+                        file->permissions = SDL_CreateTextureFromSurface(renderer, permissions_surf);
+                        SDL_FreeSurface(permissions_surf);
+                        file->permissions_rect.x = 500;
+                        file->permissions_rect.y = file->name_rect.y;
+                        SDL_QueryTexture(file->permissions, NULL, NULL, &(file->permissions_rect.w), &(file->permissions_rect.h));
+                    
+                        if((file_info.st_mode & S_IEXEC) != 0){
+                            file->icon_index = 1;
 
-                    }else{//checks if it's something else
-                        file->icon_index = 5;
+                        //checks if it's an image
+                        }else if(full_path.substr(full_path.find_last_of(".") + 1) == "jpg" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "jpeg" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "png" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "tif" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "tiff" ||
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "gif"){
+                            file->icon_index = 2;
 
+                        //checks if it's a video
+                        }else if(full_path.substr(full_path.find_last_of(".") + 1) == "mp4" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "mov" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "mkv" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "avi" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "webm"){
+                            file->icon_index = 3;
+
+                        //checks if it's a code file
+                        }else if(full_path.substr(full_path.find_last_of(".") + 1) == "h" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "c" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "cpp" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "py" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "java" || 
+                                    full_path.substr(full_path.find_last_of(".") + 1) == "js"){
+                            file->icon_index = 4;
+
+                        }else{//checks if it's something else
+                            file->icon_index = 5;
+
+                        }
                     }
                     files.push_back(file);
 
@@ -362,75 +404,18 @@ std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_pt
     return files;
 }
 
-//to grab file's permissions
-/*std::vector<std::string> get_permissions(std::vector<SDL_Texture> directory){
-    
-    struct stat info;
-    int err = stat(dirname.c_str(), &info);
-    std::vector<std::string> files;
-    std::vector<SDL_Texture*> files_permissions;
-    
-    
-    if (err == 0 && S_ISDIR(info.st_mode))
-    {
-        
-        DIR* dir = opendir(dirname.c_str());
-        // TODO: modify to be able to print all entries in directory in alphabetical order
-        //       in addition to file name, also print file size (or 'directory' if entry is a folder)
-        //       Example output:
-        //         ls.cpp (693 bytes
-        //         my_file.txt (62 bytes)
-        //         OS Files (directory)
-        struct dirent *entry;
-        struct dirent *holder;
-
-        while ((entry = readdir(dir)) != NULL) {
-
-            //if(strcmp(entry.d_name[]))
-            files_permissions.push_back((SDL_Texture*)entry->d_name);
-        }
-        closedir(dir);
-        //std::cout << "files is \n" << files[1];
-    
-        std::sort(files_permissions.begin(), files_permissions.end());
-        int i;
-        struct stat file_info;
-        //std::cout << "file size is \n" << files.size();
-        for(i =0; i < files_permissions.size(); i++ ){
-            //printf("%s testing \n", files[i]);
-
-            if(files[i].find('.') == std::string::npos){
-                
-
-                
-                
-                files_permissions.push_back((SDL_Texture*)(permissions((char *) files_permissions[i])));
-                std::cout << files_permissions[i] << std::endl;
-
-            }
-            //std::cout << files[i] << std::endl;
-            //names without a period is a folder, so grab theses.
-            //std::cout << "entry is \n" << entry->d_name;
-            //printf("%s\n, (%d bytes)\n", entry->d_name, entry->d_reclen);
-            //std::cout << entry->d_name << entry->d_reclen << std::endl;
-        }
-        //printf("%s, (%d bytes)\n", entry->d_name, entry->d_reclen);
-        //std::cout << entry->d_name << entry->d_reclen << std::endl;
-        return files_permissions;
-        
+char* readableFileSize(double size, char *buf){
+    int i = 0;
+    const char* units[] = {"B", "kB", "MB", "GB"};
+    while (size >= 1024){
+        size /= 1024;
+        i++;
     }
-    else
-    {
-        fprintf(stderr, "Error: directory '%s' not found\n", dirname.c_str());
-    }
-
-
-
-    return files_permissions;
-
+    sprintf(buf, "%.1f %s", size, units[i]);
+    return buf;
 }
-*/
-char* permissions(char *file){
+
+char* permissions(const char *file){
     struct stat st;
     char *modeval = (char *)malloc(sizeof(char) * 9 + 1);
     if(stat(file, &st) == 0){
