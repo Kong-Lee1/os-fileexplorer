@@ -44,9 +44,15 @@ typedef struct AppData {
 
     SDL_Texture *background;
 
+    SDL_Texture *scroll_bar;
+
     std::vector<FileEntry*> files;
 
     SDL_Rect background_rect;
+
+    SDL_Rect scroll_rect;
+
+    bool scroll_selected;
 
     SDL_Point offset;
 } AppData;
@@ -94,23 +100,25 @@ int main(int argc, char **argv)
         SDL_WaitEvent(&event);
         switch (event.type)
         {
-            /*
+            
             case SDL_MOUSEMOTION:
-                if (data.penguin_selected)
+                if (data.scroll_selected)
                 {
-                    data.penguin_rect.x = event.motion.x - data.offset.x;
-                    data.penguin_rect.y = event.motion.y - data.offset.y;
-                }
-                else if (data.phrase_selected)
-                {
-                    data.phrase_rect.x = event.motion.x - data.offset.x;
-                    data.phrase_rect.y = event.motion.y - data.offset.y;
+                    data.scroll_rect.y = event.motion.y - data.offset.y;
                 }
                 break;
-            */
             case SDL_MOUSEBUTTONDOWN:
                 //if the directory name is clicked
-                
+                if (event.button.button == SDL_BUTTON_LEFT &&
+                        event.button.x >= data.scroll_rect.x &&
+                        event.button.x <= data.scroll_rect.x + data.scroll_rect.w &&
+                        event.button.y >= data.scroll_rect.y &&
+                        event.button.y <= data.scroll_rect.y + data.scroll_rect.h)
+                    {
+                        data.scroll_selected = true;
+                        data.offset.x = event.button.x - data.scroll_rect.x;
+                        data.offset.y = event.button.y - data.scroll_rect.y;
+                    }
                 for(int i = 0; i < data.files.size(); i++)
                 {
                     if (event.button.button == SDL_BUTTON_LEFT &&
@@ -157,6 +165,9 @@ int main(int argc, char **argv)
                 }
                 
                 break;
+                case SDL_MOUSEBUTTONUP:
+                    data.scroll_selected = false;
+                    break;
         }
         render(renderer, &data);
     }
@@ -179,6 +190,10 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr)
     if(data_ptr->font == NULL){
         printf("error loading font\n");
     }
+
+    SDL_Surface *scroll_surf = IMG_Load("resrc/Images/scrol-bar.png");
+    data_ptr->scroll_bar = SDL_CreateTextureFromSurface(renderer, scroll_surf);
+    SDL_FreeSurface(scroll_surf);
 
     SDL_Surface *directory_surf = IMG_Load("resrc/Images/directory-icon.png");
     data_ptr->icons[0] = SDL_CreateTextureFromSurface(renderer, directory_surf);
@@ -214,6 +229,11 @@ void initialize(SDL_Renderer *renderer, AppData *data_ptr)
     data_ptr->background_rect.x = 10;
     data_ptr->background_rect.y = 10;
 
+    data_ptr->scroll_rect.x = 770;
+    data_ptr->scroll_rect.y = 5;
+    data_ptr->scroll_rect.h = 70;
+    data_ptr->scroll_rect.w = 30;
+
     SDL_QueryTexture(data_ptr->background, NULL, NULL, &(data_ptr->background_rect.w), &(data_ptr->background_rect.h));
 
     char *home = getenv("HOME");
@@ -231,6 +251,7 @@ void render(SDL_Renderer *renderer, AppData *data_ptr)
     SDL_Color color = { 0, 0, 0 };
     SDL_Rect rect;    rect.x = 200;    rect.y = 100;    rect.w = 165;    rect.h = 20;
     SDL_RenderCopy(renderer, data_ptr->background, NULL, &(data_ptr->background_rect));
+    SDL_RenderCopy(renderer, data_ptr->scroll_bar, NULL, &(data_ptr->scroll_rect));
 
     for(int i = 0; i < data_ptr->files.size(); i++){
         if(data_ptr->files[i]->icon_index == 0){
@@ -283,7 +304,6 @@ std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_pt
 
         while ((entry = readdir(dir)) != NULL) {
 
-            //if(strcmp(entry.d_name[]))
             directory_strings.push_back(entry->d_name);
         }
 
@@ -339,7 +359,6 @@ std::vector<FileEntry*> getDirectoryVector(std::string dirname, AppData *data_pt
 
                         char buf[20];
                         readableFileSize(file_info.st_size, buf); 
-                        std::cout << "file size = " << file_size << " bytes" << "\n";
                         SDL_Surface *size = TTF_RenderText_Solid(data_ptr->font, buf, color);
                         file->file_size = SDL_CreateTextureFromSurface(renderer, size);
                         SDL_FreeSurface(size);
@@ -431,7 +450,6 @@ char* permissions(const char *file){
         modeval[8] = (perm & S_IXOTH) ? 'x' : '-';
         modeval[9] = '\0';
 
-        std::cout << modeval << std::endl;
         return modeval;     
     }
     else{
